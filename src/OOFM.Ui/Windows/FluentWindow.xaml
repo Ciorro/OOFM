@@ -8,10 +8,12 @@
     Title="FluentWindow"
     Width="800"
     Height="450"
+    MinWidth="400"
+    MinHeight="430"
     Background="Transparent"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Border x:Name="Container">
-        <views:ApplicationView DataContext="{Binding}"/>
+        <views:ApplicationView DataContext="{Binding}" />
     </Border>
 </Window>

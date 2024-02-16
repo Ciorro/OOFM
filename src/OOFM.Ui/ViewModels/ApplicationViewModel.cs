@@ -29,7 +29,7 @@ internal partial class ApplicationViewModel : ObservableObject
     [RelayCommand]
     private void Navigate(string pageKey)
     {
-        _navigationService.Navigate(_pageFactory.CreatePage(pageKey));
+        //_navigationService.Navigate(_pageFactory.CreatePage(pageKey));
     }
 
     [RelayCommand]
