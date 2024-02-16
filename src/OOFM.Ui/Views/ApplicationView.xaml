@@ -62,16 +62,17 @@
                             CommandParameter="home"
                             Content="Strona główna"
                             GroupName="Navigation"
-                            Icon="Home" />
+                            Icon="Home"
+                            IsChecked="True" />
                         <c:NavigationButton
                             Command="{Binding NavigateCommand}"
-                            CommandParameter="radio-stations"
+                            CommandParameter="stations-list"
                             Content="Stacje radiowe"
                             GroupName="Navigation"
                             Icon="MusicNote2" />
                         <c:NavigationButton
                             Command="{Binding NavigateCommand}"
-                            CommandParameter="my-storage"
+                            CommandParameter="local-music"
                             Content="Moje utwory"
                             GroupName="Navigation"
                             Icon="HardDrive" />
@@ -114,6 +115,10 @@
             VerticalAlignment="Stretch"
             Background="Transparent" />
 
-        <ContentControl Grid.Column="2" Content="{Binding CurrentPage}" />
+        <ContentControl Grid.Column="2" Content="{Binding CurrentPage}">
+            <ContentControl.Resources>
+                <ResourceDictionary Source="ViewMap.xaml" />
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </UserControl>

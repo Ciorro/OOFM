@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OOFM.Ui.Navigation;
-using System.Windows;
 
 namespace OOFM.Ui.ViewModels;
 
@@ -19,6 +18,8 @@ internal partial class ApplicationViewModel : ObservableObject
         {
             OnPropertyChanged(nameof(CurrentPage));
         };
+
+        _navigationService.Navigate(_pageFactory.CreatePage("home"));
     }
 
     public INavigationPage? CurrentPage
@@ -29,7 +30,7 @@ internal partial class ApplicationViewModel : ObservableObject
     [RelayCommand]
     private void Navigate(string pageKey)
     {
-        //_navigationService.Navigate(_pageFactory.CreatePage(pageKey));
+        _navigationService.Navigate(_pageFactory.CreatePage(pageKey));
     }
 
     [RelayCommand]

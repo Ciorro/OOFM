@@ -2,7 +2,7 @@
 
 internal interface INavigationPage
 {
-    void OnInitialized();
-    void OnResumed();
-    void OnPaused();
+    void OnInitialized() { }
+    void OnResumed() { }
+    void OnPaused() { }
 }
