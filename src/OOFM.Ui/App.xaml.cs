@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OOFM.Core.Api;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.ViewModels;
@@ -16,6 +17,9 @@ public partial class App : Application
     {
         _appHost = Host.CreateDefaultBuilder().ConfigureServices(services =>
         {
+            services.AddHttpClient();
+            services.AddSingleton<IApiClient, ApiClient>();
+
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
             services.AddSingleton<INavigationService, NavigationService>();
