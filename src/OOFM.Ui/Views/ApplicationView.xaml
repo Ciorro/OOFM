@@ -115,10 +115,18 @@
             VerticalAlignment="Stretch"
             Background="Transparent" />
 
-        <ContentControl Grid.Column="2" Content="{Binding CurrentPage}">
-            <ContentControl.Resources>
-                <ResourceDictionary Source="ViewMap.xaml" />
-            </ContentControl.Resources>
-        </ContentControl>
+        <Grid Grid.Column="2">
+            <ContentControl Content="{Binding CurrentPage}">
+                <ContentControl.Resources>
+                    <ResourceDictionary Source="ViewMap.xaml" />
+                </ContentControl.Resources>
+            </ContentControl>
+            <ToggleButton
+                Margin="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+                Play / Pause
+            </ToggleButton>
+        </Grid>
     </Grid>
 </UserControl>

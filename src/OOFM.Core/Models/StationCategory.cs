@@ -1,8 +1,8 @@
 ﻿namespace OOFM.Core.Models;
 public class StationCategory(string slug, string? name = default) : IEquatable<StationCategory>
 {
-    public string Slug { get; init; } = slug;
-    public string? Name { get; init; } = name;
+    public string Slug { get; set; } = slug;
+    public string? Name { get; set; } = name;
 
     public bool Equals(StationCategory? other)
     {

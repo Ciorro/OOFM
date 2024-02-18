@@ -65,10 +65,6 @@ internal class NavigationService : INavigationService, IDisposable
 
     public void Dispose()
     {
-        while(_pages.Count > 0)
-        {
-            (_pages[0] as IDisposable)?.Dispose();
-            _pages.RemoveAt(0);
-        }
+        _pages.Clear();
     }
 }

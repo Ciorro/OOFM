@@ -26,14 +26,14 @@ public class ApiClient : IApiClient, IDisposable
 
         var stations = json.RootElement.EnumerateArray()
             .SelectMany(category => category.GetProperty("items").EnumerateArray())
-            .Select(stationElement => stationElement.Deserialize<Station>(_jsonOptions));
+            .Select(stationElement => stationElement.Deserialize<Station>(_jsonOptions)!);
 
         if (stations is null)
         {
             throw new JsonException("Invalid json.");
         }
 
-        return stations!;
+        return stations?.Distinct().ToList() ?? Enumerable.Empty<Station>();
     }
 
     public async Task<Station> GetSingleStation(string slug)
@@ -67,7 +67,7 @@ public class ApiClient : IApiClient, IDisposable
         {
             throw new JsonException("Invalid json.");
         }
-        return categories;
+        return categories.ToList();
     }
 
     private async Task<HttpContent> Request(string endpoint)
