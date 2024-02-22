@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace OOFM.Ui.Views;
+namespace OOFM.Ui.Views.Items;
 /// <summary>
 /// Interaction logic for StationItemView.xaml
 /// </summary>

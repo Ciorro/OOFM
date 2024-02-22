@@ -1,11 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api;
+using OOFM.Core.Models;
+using OOFM.Core.Playback;
+using OOFM.Ui.Caching;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.ViewModels;
 using OOFM.Ui.Windows;
 using System.Windows;
+using System.Windows.Media;
 
 namespace OOFM.Ui;
 
@@ -17,8 +21,16 @@ public partial class App : Application
     {
         _appHost = Host.CreateDefaultBuilder().ConfigureServices(services =>
         {
-            services.AddHttpClient();
+            services.AddSingleton<IHttpClientProvider, HttpClientProvider>();
             services.AddSingleton<IApiClient, ApiClient>();
+            services.AddSingleton<IStationController, StationController>();
+            services.AddSingleton<ICategoryController, CategoryController>();
+            services.AddHostedService<PingService>();
+
+            services.AddSingleton<ICache<string, Station>, StationCache>();
+            services.AddSingleton<ICache<string, ImageSource>, ThumbCache>();
+
+            services.AddSingleton<IRadioService, RadioService>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();

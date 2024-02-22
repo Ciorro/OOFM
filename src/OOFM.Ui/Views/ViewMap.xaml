@@ -4,7 +4,9 @@
     xmlns:pm="clr-namespace:OOFM.Ui.ViewModels.Pages"
     xmlns:pw="clr-namespace:OOFM.Ui.Views.Pages"
     xmlns:vm="clr-namespace:OOFM.Ui.ViewModels"
-    xmlns:vw="clr-namespace:OOFM.Ui.Views">
+    xmlns:vw="clr-namespace:OOFM.Ui.Views"
+    xmlns:vmi="clr-namespace:OOFM.Ui.ViewModels.Items"
+    xmlns:vwi="clr-namespace:OOFM.Ui.Views.Items">
     <DataTemplate DataType="{x:Type pm:HomePageViewModel}">
         <pw:HomePageView />
     </DataTemplate>
@@ -23,7 +25,7 @@
     <DataTemplate DataType="{x:Type pm:SettingsPageViewModel}">
         <pw:SettingsPageView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type vm:StationItemViewModel}">
-        <vw:StationItemView />
+    <DataTemplate DataType="{x:Type vmi:StationItemViewModel}">
+        <vwi:StationItemView />
     </DataTemplate>
 </ResourceDictionary>
