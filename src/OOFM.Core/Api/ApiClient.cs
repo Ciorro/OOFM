@@ -1,82 +1,23 @@
-﻿using OOFM.Core.Models;
-using System.Text.Json;
+﻿using System;
 
 namespace OOFM.Core.Api;
 
-public class ApiClient : IApiClient, IDisposable
+public class ApiClient(IHttpClientProvider httpClientProvider) : IApiClient
 {
-    const string BaseAddress = "http://www.open.fm";
-
-    private readonly HttpClient _http;
-    private readonly JsonSerializerOptions _jsonOptions = new()
+    public async Task<byte[]> Request(string path, CancellationToken cancellationToken)
     {
-        PropertyNameCaseInsensitive = true
-    };
+        var client = httpClientProvider.GetHttpClient();
 
-    public ApiClient(IHttpClientFactory httpClientFactory)
-    {
-        _http = httpClientFactory.CreateClient();
-        _http.BaseAddress = new Uri(BaseAddress);
+        return await client.GetByteArrayAsync(
+            requestUri: GetFullUrl(path),
+            cancellationToken: cancellationToken
+        );
     }
 
-    public async Task<IEnumerable<Station>> GetAllStations()
+    private string GetFullUrl(string path)
     {
-        var content = await Request($"/api/radio/stationsCategories");
-        var json = await JsonDocument.ParseAsync(content.ReadAsStream());
-
-        var stations = json.RootElement.EnumerateArray()
-            .SelectMany(category => category.GetProperty("items").EnumerateArray())
-            .Select(stationElement => stationElement.Deserialize<Station>(_jsonOptions)!);
-
-        if (stations is null)
-        {
-            throw new JsonException("Invalid json.");
-        }
-
-        return stations?.Distinct().ToList() ?? Enumerable.Empty<Station>();
-    }
-
-    public async Task<Station> GetSingleStation(string slug)
-    {
-        var content = await Request($"/api/radio/station/{slug}");
-        var json = await JsonDocument.ParseAsync(content.ReadAsStream());
-
-        var station = json.Deserialize<Station>(_jsonOptions)!;
-        if (station is null)
-        {
-            throw new JsonException("Invalid json.");
-        }
-
-        var currentSong = json.RootElement.GetProperty("currentSong").Deserialize<Song>(_jsonOptions);
-        if (currentSong is null)
-        {
-            throw new JsonException("Invalid json.");
-        }
-        station.Playlist.Insert(0, currentSong);
-
-        return station;
-    }
-
-    public async Task<IEnumerable<StationCategory>> GetCategories()
-    {
-        var content = await Request($"/api/radio/categories");
-        var json = await JsonDocument.ParseAsync(content.ReadAsStream());
-
-        var categories = json.Deserialize<List<StationCategory>>(_jsonOptions);
-        if (categories is null)
-        {
-            throw new JsonException("Invalid json.");
-        }
-        return categories.ToList();
-    }
-
-    private async Task<HttpContent> Request(string endpoint)
-    {
-        return (await _http.GetAsync(endpoint)).EnsureSuccessStatusCode().Content;
-    }
-
-    public void Dispose()
-    {
-        _http.Dispose();
+        if (!path.StartsWith('/'))
+            path = path.Insert(0, "/");
+        return $"https://open.fm/api{path}";
     }
 }
