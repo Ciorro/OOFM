@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api;
 using OOFM.Core.Models;
-using OOFM.Core.Playback;
 using OOFM.Ui.Caching;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Navigation;
+using OOFM.Ui.Radio;
 using OOFM.Ui.ViewModels;
 using OOFM.Ui.Windows;
 using System.Windows;
@@ -30,7 +30,7 @@ public partial class App : Application
             services.AddSingleton<ICache<string, Station>, StationCache>();
             services.AddSingleton<ICache<string, ImageSource>, ThumbCache>();
 
-            services.AddSingleton<IRadioService, RadioService>();
+            services.AddHostedService<IRadioService, RadioService>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
