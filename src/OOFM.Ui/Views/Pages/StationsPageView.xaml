@@ -40,7 +40,7 @@
         <ListView
             ItemsSource="{Binding RadioStations}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            SelectedItem="{Binding SelectedStation}">
+            SelectedItem="{Binding SelectedStation, Delay=200}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ui:LayoutPanel Margin="16,0,16,16">
