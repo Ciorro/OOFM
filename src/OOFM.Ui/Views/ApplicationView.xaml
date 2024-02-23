@@ -5,7 +5,7 @@
     xmlns:c="clr-namespace:OOFM.Ui.Controls"
     xmlns:conv="clr-namespace:OOFM.Ui.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:e="clr-namespace:OOFM.Ui.Events"
+    xmlns:e="clr-namespace:OOFM.Ui.Navigation.Events"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:OOFM.Ui.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
