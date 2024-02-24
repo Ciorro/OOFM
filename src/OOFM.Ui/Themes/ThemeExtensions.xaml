@@ -10,12 +10,26 @@
                     <SolidColorBrush x:Key="LayerFillColorAlt" Color="#0DFFFFFF" />
                     <ui:StaticResource x:Key="LayerFillColorDefaultBrush" ResourceKey="LayerFillColorDefault" />
                     <ui:StaticResource x:Key="LayerFillColorAltBrush" ResourceKey="LayerFillColorAlt" />
+
+                    <SolidColorBrush x:Key="PlayButtonFillColorDefault" Color="#AA444444" />
+                    <SolidColorBrush x:Key="PlayButtonFillColorPointerOver" Color="#CC444444" />
+                    <SolidColorBrush x:Key="PlayButtonFillColorPressed" Color="#AA444444" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorDefaultBrush" ResourceKey="PlayButtonFillColorDefault" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorPointerOverBrush" ResourceKey="PlayButtonFillColorPointerOver" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorPressedBrush" ResourceKey="PlayButtonFillColorPressed" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="LayerFillColorDefault" Color="#80FFFFFF" />
                     <SolidColorBrush x:Key="LayerFillColorAlt" Color="#0A000000" />
                     <ui:StaticResource x:Key="LayerFillColorDefaultBrush" ResourceKey="LayerFillColorDefault" />
                     <ui:StaticResource x:Key="LayerFillColorAltBrush" ResourceKey="LayerFillColorAlt" />
+
+                    <SolidColorBrush x:Key="PlayButtonFillColorDefault" Color="#AAFFFFFF" />
+                    <SolidColorBrush x:Key="PlayButtonFillColorPointerOver" Color="#88FFFFFF" />
+                    <SolidColorBrush x:Key="PlayButtonFillColorPressed" Color="#AAFFFFFF" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorDefaultBrush" ResourceKey="PlayButtonFillColorDefault" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorPointerOverBrush" ResourceKey="PlayButtonFillColorPointerOver" />
+                    <ui:StaticResource x:Key="PlayButtonFillColorPressedBrush" ResourceKey="PlayButtonFillColorPressed" />
                 </ResourceDictionary>
             </ui:ThemeResources.ThemeDictionaries>
         </ui:ThemeResources>

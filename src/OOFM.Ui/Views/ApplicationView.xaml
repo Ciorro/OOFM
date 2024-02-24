@@ -136,9 +136,12 @@
             <ToggleButton
                 Margin="20"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Bottom">
-                Play / Pause
-            </ToggleButton>
+                VerticalAlignment="Bottom"
+                Command="{Binding PlaybackToggledCommand}"
+                CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                IsChecked="{Binding IsPlaybackEnabled}"
+                Style="{StaticResource PlayButtonStyle}"
+                Visibility="{Binding CurrentStation, Converter={conv:NullVisibilityConverter}}" />
         </Grid>
     </Grid>
 </UserControl>
