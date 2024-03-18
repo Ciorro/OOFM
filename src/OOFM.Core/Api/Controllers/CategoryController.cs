@@ -1,7 +1,7 @@
 ﻿using OOFM.Core.Models;
 using System.Text.Json;
 
-namespace OOFM.Core.Api;
+namespace OOFM.Core.Api.Controllers;
 public class CategoryController : ICategoryController
 {
     private readonly IApiClient _client;
@@ -16,7 +16,7 @@ public class CategoryController : ICategoryController
         };
     }
 
-    public async Task<IEnumerable<StationCategory>> GetCategories(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Category>> GetCategories(CancellationToken cancellationToken)
     {
         var content = await _client.Request($"/radio/categories", cancellationToken);
 
@@ -24,7 +24,7 @@ public class CategoryController : ICategoryController
         {
             var json = await JsonDocument.ParseAsync(ms);
 
-            var categories = json.Deserialize<List<StationCategory>>(_jsonOptions);
+            var categories = json.Deserialize<List<Category>>(_jsonOptions);
             if (categories is null)
             {
                 throw new JsonException("Invalid json.");

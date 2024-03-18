@@ -1,0 +1,57 @@
+﻿using OOFM.Core.Models;
+using System.Text.Json;
+
+namespace OOFM.Core.Api.Controllers;
+
+public class StationController : IStationController
+{
+    private readonly IApiClient _client;
+    private readonly JsonSerializerOptions _jsonOptions;
+
+    public StationController(IApiClient client)
+    {
+        _client = client;
+
+        _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+    }
+
+    public async Task<Station> GetStationById(int id, CancellationToken cancellationToken = default)
+    {
+        return (await GetAllStations(cancellationToken)).First(s => s.Id == id);
+    }
+
+    public async Task<Station> GetStationBySlug(string slug, CancellationToken cancellationToken = default)
+    {
+        return (await GetAllStations(cancellationToken)).First(s => s.Slug == slug);
+    }
+
+    public async Task<IList<Station>> GetStationsById(IEnumerable<int> ids, CancellationToken cancellationToken = default)
+    {
+        return (await GetAllStations(cancellationToken)).Where(s => ids.Contains(s.Id)).ToList();
+    }
+
+    public async Task<IList<Station>> GetStationsBySlug(IEnumerable<string> slugs, CancellationToken cancellationToken = default)
+    {
+        return (await GetAllStations(cancellationToken)).Where(s => slugs.Contains(s.Slug)).ToList();
+    }
+
+    public async Task<IList<Station>> GetAllStations(CancellationToken cancellationToken)
+    {
+        var content = await _client.Request($"/radio/stations", cancellationToken);
+
+        using (var ms = new MemoryStream(content))
+        {
+            var json = await JsonDocument.ParseAsync(ms);
+
+            var stations = json.RootElement.EnumerateObject().Select(jObj =>
+            {
+                return jObj.Value.Deserialize<Station>(_jsonOptions)!;
+            }).Where(s => s is not null);
+
+            return stations.ToList();
+        }
+    }
+}
