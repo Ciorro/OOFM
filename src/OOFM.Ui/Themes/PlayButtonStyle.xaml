@@ -33,7 +33,7 @@
                             BorderBrush="{StaticResource OOFM_Red}"
                             BorderThickness="4"
                             CornerRadius="99">
-                            <ContentPresenter Content="{TemplateBinding ContentControl.Content}" TextBlock.FontFamily="{DynamicResource TextControlButtonForeground}" />
+                            <ContentPresenter Content="{TemplateBinding ContentControl.Content}" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -59,6 +59,7 @@
                     <Setter.Value>
                         <fic:SymbolIcon
                             FontSize="18"
+                            Foreground="{DynamicResource TextControlButtonForeground}"
                             IsFilled="True"
                             Symbol="Play" />
                     </Setter.Value>
@@ -69,6 +70,7 @@
                     <Setter.Value>
                         <fic:SymbolIcon
                             FontSize="18"
+                            Foreground="{DynamicResource TextControlButtonForeground}"
                             IsFilled="True"
                             Symbol="Pause" />
                     </Setter.Value>
