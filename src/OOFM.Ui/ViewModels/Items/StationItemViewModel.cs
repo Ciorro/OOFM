@@ -9,7 +9,7 @@ internal partial class StationItemViewModel : ObservableObject, IEquatable<Stati
     private readonly IPlaylistService _playlistService;
 
     [ObservableProperty]
-    private Song? _currentSong;
+    private Playlist? _playlist;
 
     public string Name => Station?.Name ?? "";
     public string Logo => Station?.LogoUrl ?? "/Resources/icon.png";
@@ -20,22 +20,22 @@ internal partial class StationItemViewModel : ObservableObject, IEquatable<Stati
     }
 
     private Station? _station;
-    public Station? Station
+    public Station Station
     {
-        get => _station;
+        get => _station ?? new Station();
         set
         {
             ArgumentNullException.ThrowIfNull(value);
             _station ??= value;
 
             _playlistService.Subscribe(value.Id, OnPlaylistRefreshed);
-            CurrentSong = _playlistService.GetCurrentPlaylist(value.Id)?.CurrentSong;
+            OnPlaylistRefreshed(_playlistService.GetCurrentPlaylist(value.Id)!);
         }
     }
 
     private void OnPlaylistRefreshed(Playlist playlist)
     {
-        CurrentSong = playlist.CurrentSong;
+        Playlist = playlist;
     }
 
     #region Equatable

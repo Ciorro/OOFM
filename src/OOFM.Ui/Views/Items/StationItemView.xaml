@@ -11,6 +11,27 @@
     mc:Ignorable="d">
     <ContentControl Name="container" Foreground="{DynamicResource TextControlButtonForeground}">
         <Grid>
+            <Grid.ToolTip>
+                <ToolTip ToolTipService.Placement="Right">
+                    <ToolTip.Content>
+                        <StackPanel>
+                            <TextBlock FontWeight="Medium">Następnie:</TextBlock>
+                            <ItemsControl ItemsSource="{Binding Playlist.Queue}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Run>•</Run>
+                                            <Run Text="{Binding Title}" />
+                                            <Run>-</Run>
+                                            <Run Text="{Binding Artist}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </ToolTip.Content>
+                </ToolTip>
+            </Grid.ToolTip>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -44,9 +65,9 @@
                 Margin="8,1"
                 FontSize="12"
                 TextTrimming="CharacterEllipsis">
-                <Run Text="{Binding CurrentSong.Title}" />
+                <Run Text="{Binding Playlist.CurrentSong.Title}" />
                 <Run Text="-" />
-                <Run Text="{Binding CurrentSong.Artist}" />
+                <Run Text="{Binding Playlist.CurrentSong.Artist}" />
             </TextBlock>
         </Grid>
     </ContentControl>
