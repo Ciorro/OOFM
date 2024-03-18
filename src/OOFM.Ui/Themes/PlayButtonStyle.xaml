@@ -7,7 +7,7 @@
         BasedOn="{StaticResource DefaultToggleButtonStyle}"
         TargetType="ToggleButton">
         <Style.Resources>
-            <SolidColorBrush x:Key="OOFM_Red" Color="#ef0025"/>
+            <SolidColorBrush x:Key="OOFM_Red" Color="#ef0025" />
         </Style.Resources>
         <Setter Property="Template">
             <Setter.Value>
