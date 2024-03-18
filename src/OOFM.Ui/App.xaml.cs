@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api;
 using OOFM.Core.Models;
-using OOFM.Ui.Caching;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Radio;
@@ -27,8 +26,6 @@ public partial class App : Application
             services.AddSingleton<ICategoryController, CategoryController>();
             services.AddHostedService<PingService>();
 
-            services.AddSingleton<ICache<string, Station>, StationCache>();
-            services.AddSingleton<ICache<string, ImageSource>, ThumbCache>();
 
             services.AddHostedService<IRadioService, RadioService>();
 
