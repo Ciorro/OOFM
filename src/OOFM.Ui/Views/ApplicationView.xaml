@@ -75,24 +75,24 @@
                             Content="Stacje radiowe"
                             GroupName="Navigation"
                             Icon="MusicNote2" />
-                        <c:NavigationButton
+                        <!--<c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="local-music"
                             Content="Moje utwory"
                             GroupName="Navigation"
-                            Icon="HardDrive" />
+                            Icon="HardDrive" />-->
                         <c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="history"
                             Content="Historia"
                             GroupName="Navigation"
                             Icon="History" />
-                        <c:NavigationButton
+                        <!--<c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="blacklist"
                             Content="Czarna lista"
                             GroupName="Navigation"
-                            Icon="DismissSquareMultiple" />
+                            Icon="DismissSquareMultiple" />-->
                     </ui:SimpleStackPanel>
                     <ui:SimpleStackPanel
                         Margin="8"
@@ -132,7 +132,7 @@
             Background="Transparent" />
 
         <Grid Grid.Column="2">
-            <ContentControl Content="{Binding CurrentPage}" />
+            <ContentControl Content="{Binding CurrentPage}" Margin="0, 48, 0, 0"/>
             <ToggleButton
                 Margin="20"
                 HorizontalAlignment="Right"
