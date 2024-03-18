@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Radio;
 using OOFM.Ui.ViewModels.Items;
@@ -10,6 +11,7 @@ internal partial class ApplicationViewModel : ObservableObject
 {
     private readonly IPageFactory _pageFactory;
     private readonly IRadioService _radioService;
+    private readonly IStationItemFactory _stationItemFactory;
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
@@ -18,15 +20,20 @@ internal partial class ApplicationViewModel : ObservableObject
     [ObservableProperty]
     private StationItemViewModel? _currentStation;
 
-    public ApplicationViewModel(INavigationService navigationService, IPageFactory pageFactory, IRadioService radioService)
+    public ApplicationViewModel(
+        INavigationService navigationService,
+        IPageFactory pageFactory,
+        IRadioService radioService,
+        IStationItemFactory stationItemFactory)
     {
         _pageFactory = pageFactory;
-
         _radioService = radioService;
+        _stationItemFactory = stationItemFactory;
+
         _radioService.PlaybackStarted += (station) =>
         {
             IsPlaybackEnabled = true;
-            CurrentStation = new StationItemViewModel(station);
+            CurrentStation = _stationItemFactory.Create(station);
         };
         _radioService.PlaybackStopped += (_) =>
         {
@@ -36,7 +43,7 @@ internal partial class ApplicationViewModel : ObservableObject
         _radioService.StationRefreshed += (station) =>
         {
             CurrentStation = null;
-            CurrentStation = new StationItemViewModel(station);
+            CurrentStation = _stationItemFactory.Create(station);
         };
 
         _navigationService = navigationService;

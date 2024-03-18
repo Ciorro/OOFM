@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OOFM.Core.Api;
+using OOFM.Core.Api.Controllers;
 using OOFM.Core.Models;
 using OOFM.Ui.Attributes;
+using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Radio;
 using OOFM.Ui.ViewModels.Items;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -18,52 +20,48 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
     private readonly IStationController _stationController;
     private readonly ICategoryController _categoryController;
     private readonly IRadioService _radioService;
-
+    private readonly IStationItemFactory _stationItemFactory;
     [ObservableProperty]
     private CollectionView? _radioStations;
 
     [ObservableProperty]
     private StationItemViewModel? _selectedStation;
 
-    public StationsPageViewModel(IStationController stationController, ICategoryController categoryController, IRadioService radioService)
+    public StationsPageViewModel(
+        IStationController stationController,
+        ICategoryController categoryController,
+        IRadioService radioService,
+        IStationItemFactory stationItemFactory)
     {
         _stationController = stationController;
         _categoryController = categoryController;
         _radioService = radioService;
+        _stationItemFactory = stationItemFactory;
 
         if (_radioService.CurrentStation is not null)
         {
-            SelectedStation = new StationItemViewModel(_radioService.CurrentStation);
+            SelectedStation = _stationItemFactory.Create(_radioService.CurrentStation);
         }
     }
 
-    [RelayCommand]
-    private async Task LoadStations(CancellationToken cancellationToken)
+    public void OnInitialized()
     {
-        ICollection<Station>? stations = null;
-
-        try
+        Task.Run(async () =>
         {
-            stations = await FetchStations(default);
-        }
-        catch (Exception e)
-        {
-            //TODO: Log
-            MessageBox.Show($"MESSAGE:\n{e.Message}\n\nHELP:\n{e.HelpLink}\n\nSTACK TRACE:\n{e.StackTrace}");
-        }
-
-        Dispatcher.CurrentDispatcher.Invoke(() =>
-        {
-            RadioStations = (CollectionView)CollectionViewSource.GetDefaultView(stations?.Select(s =>
+            try
             {
-                return new StationItemViewModel(s);
-            }));
-        });
-    }
+                var stations = await _stationController.GetAllStations();
 
-    public void OnResumed()
-    {
-        LoadStationsCommand.ExecuteAsync(null);
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    RadioStations = (CollectionView)CollectionViewSource.GetDefaultView(stations?.Select(s =>
+                    {
+                        return _stationItemFactory.Create(s);
+                    }));
+                });
+            }
+            catch { }
+        });
     }
 
     partial void OnSelectedStationChanged(StationItemViewModel? value)
@@ -74,22 +72,7 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
         }
         else
         {
-            _radioService.Play((Station)value);
+            _radioService.Play(value.Station!);
         }
-    }
-
-    private async Task<ICollection<Station>> FetchStations(CancellationToken cancellationToken)
-    {
-        var stations = await _stationController.GetAllStations(cancellationToken);
-        var categories = await _categoryController.GetCategories(cancellationToken);
-
-        cancellationToken.ThrowIfCancellationRequested();
-
-        foreach (var category in stations.SelectMany(s => s.Categories))
-        {
-            category.Name = categories.FirstOrDefault(c => c == category)?.Name;
-        }
-
-        return stations.ToList();
     }
 }

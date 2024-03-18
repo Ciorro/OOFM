@@ -27,7 +27,7 @@
                 CornerRadius="4"
                 RenderOptions.BitmapScalingMode="Fant">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding Logo, IsAsync=True}" Stretch="Uniform" />
+                    <ImageBrush ImageSource="{Binding Logo, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
                 </Border.Background>
             </Border>
 

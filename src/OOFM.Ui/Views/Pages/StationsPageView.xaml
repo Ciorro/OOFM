@@ -13,29 +13,12 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel>
-        <DockPanel
-            Margin="16,48,16,14"
+        <Label
+            Margin="16"
+            Content="Stacje Radiowe"
             DockPanel.Dock="Top"
-            LastChildFill="False">
-            <Label
-                Content="Stacje Radiowe"
-                DockPanel.Dock="Left"
-                FontSize="28"
-                FontWeight="Bold" />
-            <Button
-                Padding="4"
-                Command="{Binding LoadStationsCommand}"
-                DockPanel.Dock="Right">
-                <Grid>
-                    <fic:SymbolIcon Symbol="ArrowClockwise" />
-                    <ui:ProgressRing
-                        MinWidth="14"
-                        MinHeight="14"
-                        IsActive="True"
-                        Visibility="{Binding LoadStationsCommand.IsRunning, Converter={c:BoolToVisibilityConverter}}" />
-                </Grid>
-            </Button>
-        </DockPanel>
+            FontSize="28"
+            FontWeight="Bold" />
 
         <ListView
             ItemsSource="{Binding RadioStations}"

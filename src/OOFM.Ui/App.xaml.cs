@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api;
-using OOFM.Core.Models;
+using OOFM.Core.Api.Controllers;
 using OOFM.Ui.Extensions;
+using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Radio;
+using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels;
 using OOFM.Ui.Windows;
 using System.Windows;
-using System.Windows.Media;
 
 namespace OOFM.Ui;
 
@@ -24,14 +25,17 @@ public partial class App : Application
             services.AddSingleton<IApiClient, ApiClient>();
             services.AddSingleton<IStationController, StationController>();
             services.AddSingleton<ICategoryController, CategoryController>();
+            services.AddSingleton<IPlaylistController, PlaylistController>();
+
             services.AddHostedService<PingService>();
-
-
             services.AddHostedService<IRadioService, RadioService>();
+            services.AddHostedService<IPlaylistService, PlaylistService>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
             services.AddSingleton<INavigationService, NavigationService>();
+
+            services.AddStationItemFactory();
 
             services.AddSingleton<ApplicationViewModel>();
             services.AddSingleton(s => new FluentWindow
