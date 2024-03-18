@@ -132,7 +132,7 @@
             Background="Transparent" />
 
         <Grid Grid.Column="2">
-            <ContentControl Content="{Binding CurrentPage}" Margin="0, 48, 0, 0"/>
+            <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
             <ToggleButton
                 Margin="20"
                 HorizontalAlignment="Right"
