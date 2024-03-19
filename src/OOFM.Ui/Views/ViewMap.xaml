@@ -25,6 +25,9 @@
     <DataTemplate DataType="{x:Type pm:SettingsPageViewModel}">
         <pw:SettingsPageView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type pm:PlayerPageViewModel}">
+        <pw:PlayerPageView />
+    </DataTemplate>
     <DataTemplate DataType="{x:Type vmi:StationItemViewModel}">
         <vwi:StationItemView />
     </DataTemplate>
