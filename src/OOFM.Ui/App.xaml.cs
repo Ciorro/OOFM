@@ -27,7 +27,7 @@ public partial class App : Application
             services.AddSingleton<ICategoryController, CategoryController>();
             services.AddSingleton<IPlaylistController, PlaylistController>();
 
-            services.AddHostedService<PingService>();
+            //services.AddHostedService<PingService>();
             services.AddHostedService<IRadioService, RadioService>();
             services.AddHostedService<IPlaylistService, PlaylistService>();
 

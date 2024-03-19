@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api.Controllers;
 using OOFM.Core.Models;
+using System.Windows;
 
 namespace OOFM.Ui.Services
 {
@@ -40,14 +41,21 @@ namespace OOFM.Ui.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _playlists = await _playlistController.GetAllPlaylists(stoppingToken);
+                try
+                {
+                    _playlists = await _playlistController.GetAllPlaylists(stoppingToken);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"MESSAGE:\n{e.Message}\n\nHELP:\n{e.HelpLink}\n\nSTACK TRACE:\n{e.StackTrace}");
+                }
 
                 foreach (var subscribtion in _subscribtions)
                 {
                     Notify(subscribtion);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(30));
+                await Task.Delay(TimeSpan.FromSeconds(15));
             }
         }
 
