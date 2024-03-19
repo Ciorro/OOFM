@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:OOFM.Ui.Controls"
     xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF">
+
     <Style TargetType="{x:Type controls:NavigationButton}">
         <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
         <Setter Property="Template">
@@ -73,6 +74,38 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="NavigationButtonStyle" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border
+                        Name="border"
+                        Background="Transparent"
+                        CornerRadius="4">
+                        <Grid Margin="0,6,6,6">
+                            <ContentPresenter
+                                Grid.Column="2"
+                                Margin="10,0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                TextBlock.FontSize="14" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
