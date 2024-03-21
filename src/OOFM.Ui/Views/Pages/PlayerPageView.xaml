@@ -12,55 +12,64 @@
     mc:Ignorable="d">
     <DockPanel Margin="0,24,0,0">
 
-        <Grid Margin="16,0" DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" MaxWidth="200" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
+        <StackPanel
+            x:Name="SimilarChannels"
+            MaxWidth="400"
+            DockPanel.Dock="Right">
+            <TextBlock
+                Margin="0,12,0,8"
+                FontSize="14"
+                FontWeight="Medium">
+                Podobne:
+            </TextBlock>
+        </StackPanel>
 
-            <Border
-                Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
-                HorizontalAlignment="Stretch"
-                CornerRadius="8"
-                RenderOptions.BitmapScalingMode="Fant">
-                <Border.Background>
-                    <ImageBrush ImageSource="{Binding Station.LogoUrl, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
-                </Border.Background>
-            </Border>
+        <StackPanel Margin="16,0">
 
-            <StackPanel Grid.Column="1" Margin="16,0,0,0">
-                <Label FontSize="28" FontWeight="Bold">
-                    <TextBlock Text="{Binding Playlist.CurrentSong.Title}" TextTrimming="CharacterEllipsis" />
-                </Label>
-                <TextBlock
-                    FontSize="14"
-                    FontWeight="Medium"
-                    Foreground="{DynamicResource TextControlButtonForeground}"
-                    Text="{Binding Playlist.CurrentSong.Artist}" />
-                <ToggleButton
-                    Margin="0,12"
-                    ui:ControlHelper.CornerRadius="14"
-                    FontSize="12">
-                    <TextBlock>
-                        <Run>Dodaj do ulubionych</Run>
-                        <InlineUIContainer BaselineAlignment="TextBottom">
-                            <fic:SymbolIcon
-                                FontSize="14"
-                                IsFilled="True"
-                                Symbol="Heart" />
-                        </InlineUIContainer>
-                    </TextBlock>
-                </ToggleButton>
-            </StackPanel>
-        </Grid>
 
-        <Grid Margin="16,8">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MaxWidth="200" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Margin="0,0,16,0">
+                <Border
+                    Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
+                    HorizontalAlignment="Stretch"
+                    CornerRadius="8"
+                    RenderOptions.BitmapScalingMode="Fant">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Station.LogoUrl, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
+                    </Border.Background>
+                </Border>
+
+                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                    <Label FontSize="28" FontWeight="Bold">
+                        <TextBlock Text="{Binding Playlist.CurrentSong.Title}" TextTrimming="CharacterEllipsis" />
+                    </Label>
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Medium"
+                        Foreground="{DynamicResource TextControlButtonForeground}"
+                        Text="{Binding Playlist.CurrentSong.Artist}" />
+                    <ToggleButton
+                        Margin="0,12"
+                        ui:ControlHelper.CornerRadius="14"
+                        FontSize="12">
+                        <TextBlock>
+                            <Run>Dodaj do ulubionych</Run>
+                            <InlineUIContainer BaselineAlignment="TextBottom">
+                                <fic:SymbolIcon
+                                    FontSize="14"
+                                    IsFilled="True"
+                                    Symbol="Heart" />
+                            </InlineUIContainer>
+                        </TextBlock>
+                    </ToggleButton>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel>
                 <TextBlock
                     Margin="0,12,0,8"
                     FontSize="14"
@@ -94,14 +103,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-            <StackPanel Grid.Column="1" MaxWidth="400" x:Name="SimilarChannels">
-                <TextBlock
-                    Margin="0,12,0,8"
-                    FontSize="14"
-                    FontWeight="Medium">
-                    Podobne:
-                </TextBlock>
-            </StackPanel>
-        </Grid>
+        </StackPanel>
     </DockPanel>
 </UserControl>
