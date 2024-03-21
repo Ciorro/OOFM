@@ -3,12 +3,105 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF"
     xmlns:local="clr-namespace:OOFM.Ui.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock Style="{StaticResource HeaderTextBlockStyle}">Player</TextBlock>
-    </Grid>
+    <DockPanel Margin="0,24,0,0">
+
+        <Grid Margin="16,0" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MaxWidth="200" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <Border
+                Height="{Binding Path=ActualWidth, RelativeSource={RelativeSource Self}}"
+                HorizontalAlignment="Stretch"
+                CornerRadius="8"
+                RenderOptions.BitmapScalingMode="Fant">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding Station.LogoUrl, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
+                </Border.Background>
+            </Border>
+
+            <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                <Label FontSize="28" FontWeight="Bold">
+                    <TextBlock Text="{Binding Playlist.CurrentSong.Title}" TextTrimming="CharacterEllipsis" />
+                </Label>
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="Medium"
+                    Foreground="{DynamicResource TextControlButtonForeground}"
+                    Text="{Binding Playlist.CurrentSong.Artist}" />
+                <ToggleButton
+                    Margin="0,12"
+                    ui:ControlHelper.CornerRadius="14"
+                    FontSize="12">
+                    <TextBlock>
+                        <Run>Dodaj do ulubionych</Run>
+                        <InlineUIContainer BaselineAlignment="TextBottom">
+                            <fic:SymbolIcon
+                                FontSize="14"
+                                IsFilled="True"
+                                Symbol="Heart" />
+                        </InlineUIContainer>
+                    </TextBlock>
+                </ToggleButton>
+            </StackPanel>
+        </Grid>
+
+        <Grid Margin="16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="0,0,16,0">
+                <TextBlock
+                    Margin="0,12,0,8"
+                    FontSize="14"
+                    FontWeight="Medium">
+                    Następnie:
+                </TextBlock>
+                <ItemsControl ItemsSource="{Binding Playlist.Queue}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ui:SimpleStackPanel Spacing="4" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Padding="12,8"
+                                Background="{DynamicResource LayerFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource LayerFillColorAltBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Title}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Artist}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <StackPanel Grid.Column="1" MaxWidth="400" x:Name="SimilarChannels">
+                <TextBlock
+                    Margin="0,12,0,8"
+                    FontSize="14"
+                    FontWeight="Medium">
+                    Podobne:
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>
