@@ -59,7 +59,6 @@
                     <Setter.Value>
                         <fic:SymbolIcon
                             FontSize="18"
-                            Foreground="{DynamicResource TextControlButtonForeground}"
                             IsFilled="True"
                             Symbol="Play" />
                     </Setter.Value>
@@ -70,7 +69,6 @@
                     <Setter.Value>
                         <fic:SymbolIcon
                             FontSize="18"
-                            Foreground="{DynamicResource TextControlButtonForeground}"
                             IsFilled="True"
                             Symbol="Pause" />
                     </Setter.Value>

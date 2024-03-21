@@ -5,7 +5,7 @@
     xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF">
 
     <Style TargetType="{x:Type controls:NavigationButton}">
-        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:NavigationButton}">
@@ -82,7 +82,7 @@
     </Style>
 
     <Style x:Key="NavigationButtonStyle" TargetType="RadioButton">
-        <Setter Property="Foreground" Value="{DynamicResource TextControlButtonForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}" />
         <Setter Property="Padding" Value="8" />
         <Setter Property="Template">
             <Setter.Value>

@@ -16,6 +16,7 @@
     d:DesignWidth="800"
     Background="Transparent"
     CacheMode="BitmapCache"
+    Foreground="{DynamicResource TextControlForeground}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary Source="ViewMap.xaml" />
@@ -38,6 +39,7 @@
         <Border
             Grid.Row="0"
             Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
             Background="{DynamicResource LayerFillColorDefaultBrush}"
             BorderBrush="{DynamicResource LayerFillColorAltBrush}"
             BorderThickness="0,0,1,0">
@@ -75,12 +77,12 @@
                             Content="Stacje radiowe"
                             GroupName="Navigation"
                             Icon="MusicNote2" />
-                        <!--<c:NavigationButton
+                        <c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="local-music"
-                            Content="Moje utwory"
+                            Content="Ulubione"
                             GroupName="Navigation"
-                            Icon="HardDrive" />-->
+                            Icon="Heart" />
                         <c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="history"
