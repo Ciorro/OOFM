@@ -2,13 +2,15 @@
 using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api;
 using OOFM.Core.Api.Controllers;
+using OOFM.Core.Playback.Player;
+using OOFM.Core.Streaming;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
-using OOFM.Ui.Radio;
 using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels;
 using OOFM.Ui.Windows;
+using System.IO;
 using System.Windows;
 
 namespace OOFM.Ui;
@@ -27,8 +29,7 @@ public partial class App : Application
             services.AddSingleton<ICategoryController, CategoryController>();
             services.AddSingleton<IPlaylistController, PlaylistController>();
 
-            //services.AddHostedService<PingService>();
-            services.AddHostedService<IRadioService, RadioService>();
+            services.AddSingleton<IRadioPlayer, RadioPlayer>();
             services.AddHostedService<IPlaylistService, PlaylistService>();
 
             services.AddPages();
