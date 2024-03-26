@@ -5,7 +5,13 @@ public class HttpClientProvider : IHttpClientProvider, IDisposable
 
     public HttpClient GetHttpClient()
     {
-        return _httpClientInstance ??= new HttpClient();
+        if (_httpClientInstance is null)
+        {
+            _httpClientInstance = new HttpClient();
+            _httpClientInstance.DefaultRequestHeaders.Add("User-Agent", "TEST");
+        }
+
+        return _httpClientInstance;
     }
 
     public void Dispose()
