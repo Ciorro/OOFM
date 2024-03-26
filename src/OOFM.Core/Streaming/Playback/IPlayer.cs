@@ -1,4 +1,4 @@
-﻿namespace OOFM.Core.Playback.Player;
+﻿namespace OOFM.Core.Streaming.Playback;
 
 public interface IPlayer
 {

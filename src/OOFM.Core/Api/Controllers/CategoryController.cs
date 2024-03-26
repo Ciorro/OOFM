@@ -1,4 +1,4 @@
-﻿using OOFM.Core.Models;
+﻿using OOFM.Core.Api.Models;
 using System.Text.Json;
 
 namespace OOFM.Core.Api.Controllers;

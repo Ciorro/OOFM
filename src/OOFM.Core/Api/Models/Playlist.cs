@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OOFM.Core.Models
+namespace OOFM.Core.Api.Models
 {
     public class Playlist
     {

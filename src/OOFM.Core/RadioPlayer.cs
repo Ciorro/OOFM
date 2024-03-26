@@ -1,8 +1,8 @@
 ﻿using OOFM.Core.Api;
-using OOFM.Core.Models;
+using OOFM.Core.Api.Models;
 using OOFM.Core.Streaming.M3U;
 
-namespace OOFM.Core.Streaming;
+namespace OOFM.Core;
 
 public class RadioPlayer : IRadioPlayer
 {

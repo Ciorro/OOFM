@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api.Controllers;
-using OOFM.Core.Models;
+using OOFM.Core.Api.Models;
 using System.Windows;
 
 namespace OOFM.Ui.Services

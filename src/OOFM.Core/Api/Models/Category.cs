@@ -1,4 +1,4 @@
-﻿namespace OOFM.Core.Models;
+﻿namespace OOFM.Core.Api.Models;
 public record Category
 {
     public string? Slug { get; init; }

@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OOFM.Core;
 using OOFM.Core.Api.Controllers;
-using OOFM.Core.Models;
-using OOFM.Core.Streaming;
 using OOFM.Ui.Attributes;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;

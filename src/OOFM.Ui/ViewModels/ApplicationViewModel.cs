@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OOFM.Core.Streaming;
+using OOFM.Core;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Services;

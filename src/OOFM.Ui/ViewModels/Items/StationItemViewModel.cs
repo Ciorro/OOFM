@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using OOFM.Core.Models;
+using OOFM.Core.Api.Models;
 using OOFM.Ui.Services;
 
 namespace OOFM.Ui.ViewModels.Items;

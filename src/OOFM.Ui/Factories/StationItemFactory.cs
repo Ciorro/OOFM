@@ -1,4 +1,4 @@
-﻿using OOFM.Core.Models;
+﻿using OOFM.Core.Api.Models;
 using OOFM.Ui.ViewModels.Items;
 
 namespace OOFM.Ui.Factories

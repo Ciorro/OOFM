@@ -1,4 +1,4 @@
-﻿using OOFM.Core.Models;
+﻿using OOFM.Core.Api.Models;
 
 namespace OOFM.Ui.Services
 {

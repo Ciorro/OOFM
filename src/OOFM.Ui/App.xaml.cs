@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OOFM.Core;
 using OOFM.Core.Api;
 using OOFM.Core.Api.Controllers;
-using OOFM.Core.Playback.Player;
-using OOFM.Core.Streaming;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;

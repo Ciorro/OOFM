@@ -1,6 +1,6 @@
 ﻿using OpenTK.Audio.OpenAL;
 
-namespace OOFM.Core.Playback.Player;
+namespace OOFM.Core.Streaming.Playback;
 
 public class OpenALPlayer : IPlayer, IDisposable
 {

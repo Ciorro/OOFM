@@ -1,6 +1,6 @@
-﻿using OOFM.Core.Models;
+﻿using OOFM.Core.Api.Models;
 
-namespace OOFM.Core.Streaming;
+namespace OOFM.Core;
 
 public interface IRadioPlayer
 {
