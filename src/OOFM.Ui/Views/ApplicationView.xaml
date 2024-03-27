@@ -56,7 +56,7 @@
                             RenderOptions.BitmapScalingMode="Fant"
                             Source="/Resources/icon.png" />
                     </InlineUIContainer>
-                    <Run BaselineAlignment="TextTop">OpenFM</Run>
+                    <Run BaselineAlignment="TextTop">Open OFM</Run>
                 </TextBlock>
                 <DockPanel LastChildFill="False">
                     <ui:SimpleStackPanel
