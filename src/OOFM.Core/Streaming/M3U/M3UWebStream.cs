@@ -41,10 +41,10 @@
                     await StreamLoop(streamUrl, _cts.Token);
                 }
                 catch(OperationCanceledException) { }
-                catch
+                catch(Exception e)
                 {
                     //TODO: Log error
-                    await Console.Out.WriteLineAsync("M3UWEBSTREAM ERROR");
+                    await Console.Out.WriteLineAsync("M3UWEBSTREAM ERROR:\n" + e.Message + "\n" + e.StackTrace);
                 }
             });
         }
@@ -53,6 +53,7 @@
         {
             _cts?.Cancel();
             _streamTask?.Wait();
+            _buffer.Clear();
         }
 
         private async Task StreamLoop(string streamUrl, CancellationToken cancellationToken)
@@ -81,7 +82,13 @@
                     currentSequence = chunkInfo.Sequence;
                 }
 
-                await Task.Delay(chunkInfos.Last().Duration, cancellationToken);
+                TimeSpan delay = TimeSpan.FromSeconds(1);
+                if (chunkInfos.Count > 0)
+                {
+                    delay = chunkInfos.Last().Duration;
+                }
+
+                await Task.Delay(delay, cancellationToken);
             }
         }
 

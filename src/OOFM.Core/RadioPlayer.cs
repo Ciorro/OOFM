@@ -1,6 +1,9 @@
 ﻿using OOFM.Core.Api;
 using OOFM.Core.Api.Models;
+using OOFM.Core.Streaming;
+using OOFM.Core.Streaming.Decoding;
 using OOFM.Core.Streaming.M3U;
+using OOFM.Core.Streaming.Playback;
 
 namespace OOFM.Core;
 
@@ -41,7 +44,7 @@ public class RadioPlayer : IRadioPlayer
                 {
                     try
                     {
-                        await StreamLoop(CurrentStation.StreamUrl, _cts.Token);
+                        await StreamLoop(_cts.Token);
                     }
                     catch (Exception e)
                     {
@@ -66,11 +69,32 @@ public class RadioPlayer : IRadioPlayer
         }
     }
 
-    private async Task StreamLoop(string streamUrl, CancellationToken cancellationToken)
+    private async Task StreamLoop(CancellationToken cancellationToken)
     {
-        while (!cancellationToken.IsCancellationRequested)
+        var buffer = new byte[64000];
+        var soundBuffer = new SoundBuffer(1048576 * 10);
+
+        using (var _decoder = new FFmpegDecoder("ffmpeg"))
+        using (var player = new OpenALPlayer(soundBuffer))
         {
-            await Task.Delay(100);
+            player.Play();
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                int read;
+
+                if ((read = _m3uStream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    _decoder.ProcessInput(buffer, 0, read);
+                }
+
+                if ((read = _decoder.ProcessOutput(buffer, 0, buffer.Length)) > 0)
+                {
+                    soundBuffer.Write(buffer, 0, read);
+                }
+
+                await Task.Delay(10);
+            }
         }
     }
 }

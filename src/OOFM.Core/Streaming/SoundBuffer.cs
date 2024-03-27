@@ -26,7 +26,7 @@ public class SoundBuffer
             if (_readPosition + diff > _buffer.Length ||
                 _readPosition + diff < 0)
             {
-                throw new ArgumentOutOfRangeException("Buffer is too small.");
+                throw new ArgumentOutOfRangeException();
             }
 
             _position += diff;
@@ -54,7 +54,7 @@ public class SoundBuffer
         {
             if (count > _buffer.Length)
             {
-                throw new ArgumentOutOfRangeException("The buffer is too small.");
+                throw new ArgumentOutOfRangeException();
             }
 
             int overflow = _writePosition + count - _buffer.Length;
@@ -82,6 +82,19 @@ public class SoundBuffer
             };
 
             return SeekInternal(offset);
+        }
+    }
+
+    public void Clear()
+    {
+        lock (_bufferLock)
+        {
+            Array.Fill<byte>(_buffer, 0);
+
+            Length = 0;
+            _position = 0;
+            _readPosition = 0;
+            _writePosition = 0;
         }
     }
 
@@ -116,5 +129,11 @@ public class SoundBuffer
 
         _readPosition -= count;
         _writePosition -= count;
+
+        if (_readPosition < 0)
+        {
+            _position += -_readPosition;
+            _readPosition = 0;
+        }
     }
 }

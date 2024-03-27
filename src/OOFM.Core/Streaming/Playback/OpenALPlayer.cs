@@ -5,9 +5,9 @@ namespace OOFM.Core.Streaming.Playback;
 public class OpenALPlayer : IPlayer, IDisposable
 {
     private const int NumBuffers = 16;
-    private const int BufferSize = 2048;
+    private const int BufferSize = 8192;
 
-    private readonly Stream _stream;
+    private readonly SoundBuffer _buffer;
 
     private readonly ALDevice _device;
     private readonly ALContext _context;
@@ -18,9 +18,9 @@ public class OpenALPlayer : IPlayer, IDisposable
     private CancellationTokenSource? _cts;
     private Task? _playbackTask;
 
-    public OpenALPlayer(Stream stream)
+    public OpenALPlayer(SoundBuffer buffer)
     {
-        _stream = stream;
+        _buffer = buffer;
 
         //Initialize OpenAL
         _device = ALC.OpenDevice(null);
@@ -95,7 +95,7 @@ public class OpenALPlayer : IPlayer, IDisposable
         //Initialize buffers
         for (int i = 0; i < NumBuffers; i++)
         {
-            await _stream.ReadAsync(dataBuffer, cancellationToken);
+            _buffer.Read(dataBuffer, 0, dataBuffer.Length);
 
             AL.BufferData(_buffers[i], ALFormat.Stereo16, dataBuffer, 48000);
             AL.SourceQueueBuffer(_source, _buffers[i]);
@@ -106,9 +106,14 @@ public class OpenALPlayer : IPlayer, IDisposable
         //Update buffers
         while (!cancellationToken.IsCancellationRequested)
         {
+            if (AL.GetSource(_source, ALGetSourcei.SourceState) != (int)ALSourceState.Playing)
+            {
+                AL.SourcePlay(_source);
+            }
+
             while (AL.GetSource(_source, ALGetSourcei.BuffersProcessed) > 0)
             {
-                await _stream.ReadAsync(dataBuffer, cancellationToken);
+                _buffer.Read(dataBuffer, 0, dataBuffer.Length);
 
                 int alBuffer = AL.SourceUnqueueBuffer(_source);
 
