@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using OOFM.Core;
 using OOFM.Core.Api.Controllers;
 using OOFM.Ui.Attributes;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
-using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels.Items;
-using System.Threading;
-using System.Windows;
-using System.Windows.Data;
+using System.Collections.ObjectModel;
 using System.Windows.Threading;
 
 namespace OOFM.Ui.ViewModels.Pages;
@@ -22,7 +18,7 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
     private readonly IStationItemFactory _stationItemFactory;
 
     [ObservableProperty]
-    private CollectionView? _radioStations;
+    private ObservableCollection<StationItemViewModel>? _radioStations;
 
     [ObservableProperty]
     private StationItemViewModel? _selectedStation;
@@ -35,11 +31,6 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
         _stationController = stationController;
         _stationItemFactory = stationItemFactory;
         _radioPlayer = radioPlayer;
-
-        if (_radioPlayer.CurrentStation is not null)
-        {
-            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
-        }
     }
 
     public void OnInitialized()
@@ -52,7 +43,7 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    RadioStations = (CollectionView)CollectionViewSource.GetDefaultView(stations?.Select(s =>
+                    RadioStations = new ObservableCollection<StationItemViewModel>(stations.Select(s =>
                     {
                         return _stationItemFactory.Create(s);
                     }));
@@ -60,6 +51,14 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
             }
             catch { }
         });
+    }
+
+    public void OnResumed()
+    {
+        if (_radioPlayer.CurrentStation is not null)
+        {
+            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
+        }
     }
 
     partial void OnSelectedStationChanged(StationItemViewModel? value)

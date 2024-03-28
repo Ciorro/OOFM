@@ -26,6 +26,11 @@ public class RadioPlayer : IRadioPlayer
 
     public void Play(Station station)
     {
+        if (station.Id == CurrentStation?.Id)
+        {
+            return;
+        }
+
         Stop();
 
         if (station is not null)

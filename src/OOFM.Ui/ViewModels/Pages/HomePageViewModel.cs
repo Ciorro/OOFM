@@ -34,15 +34,15 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
         _stationController = stationController;
         _stationItemFactory = stationItemFactory;
         _radioPlayer = radioPlayer;
-
-        if (_radioPlayer.CurrentStation is not null)
-        {
-            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
-        }
     }
 
     public void OnResumed()
     {
+        if (_radioPlayer.CurrentStation is not null)
+        {
+            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
+        }
+
         Task.Run(async () =>
         {
             try
