@@ -3,5 +3,6 @@
 namespace OOFM.Core.Api.Controllers;
 public interface ICategoryController
 {
-    Task<IEnumerable<Category>> GetCategories(CancellationToken cancellationToken = default);
+    Task<IList<Category>> GetAllCategories(CancellationToken cancellationToken = default);
+    Task<ExtendedCategory> GetExtendedCategory(Category category, CancellationToken cancellationToken = default);
 }

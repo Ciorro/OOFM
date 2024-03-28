@@ -62,4 +62,22 @@ public class StationController : IStationController
             return stations.ToList();
         }
     }
+
+    public async Task<ExtendedStation> GetExtendedStation(Station station, CancellationToken cancellationToken = default)
+    {
+        var content = await _client.Request($"/radio/station/{station.Slug}", cancellationToken);
+
+        using (var ms = new MemoryStream(content))
+        {
+            var json = await JsonDocument.ParseAsync(ms);
+
+            var extStation = json.Deserialize<ExtendedStation>(_jsonOptions);
+            if (extStation is null)
+            {
+                throw new JsonException("Invalid json.");
+            }
+
+            return extStation;
+        }
+    }
 }

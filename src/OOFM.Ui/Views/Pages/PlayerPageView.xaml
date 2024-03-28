@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:OOFM.Ui.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.modernwpf.com/2019"
@@ -12,20 +13,53 @@
     mc:Ignorable="d">
     <DockPanel Margin="0,24,0,0">
 
-        <StackPanel
+        <DockPanel
             x:Name="SimilarChannels"
             MaxWidth="400"
             DockPanel.Dock="Right">
             <TextBlock
-                Margin="0,12,0,8"
+                Margin="0,15,0,8"
+                DockPanel.Dock="Top"
                 FontSize="14"
                 FontWeight="Medium">
-                Podobne:
+                Może Ci się spodobać
             </TextBlock>
-        </StackPanel>
+
+            <ListView
+                Name="Recommendations"
+                ItemsSource="{Binding RecommendedStations}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding RecommendationSelectedCommand}" CommandParameter="{Binding SelectedItem, ElementName=Recommendations}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ui:SimpleStackPanel Margin="0,0,8,8" Spacing="8" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="Transparent" />
+                    <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="Transparent" />
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                        <Style.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4" />
+                            </Style>
+                        </Style.Resources>
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Height" Value="64" />
+                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </DockPanel>
 
         <StackPanel Margin="16,0">
-
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -39,7 +73,7 @@
                     CornerRadius="8"
                     RenderOptions.BitmapScalingMode="Fant">
                     <Border.Background>
-                        <ImageBrush ImageSource="{Binding Station.LogoUrl, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
+                        <ImageBrush ImageSource="{Binding CurrentStation.LogoUrl, IsAsync=True, TargetNullValue='pack://application:,,,/Resources/icon.png'}" Stretch="Uniform" />
                     </Border.Background>
                 </Border>
 
