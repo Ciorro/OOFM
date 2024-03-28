@@ -15,7 +15,7 @@
     <DockPanel>
         <Label
             Margin="16"
-            Content="Stacje Radiowe"
+            Content="Stacje radiowe"
             DockPanel.Dock="Top"
             FontSize="28"
             FontWeight="Bold" />
