@@ -70,7 +70,7 @@ namespace OOFM.Ui.Services
 
         record struct Subscribtion
         {
-
+            //TODO: Implement iequatable
             public int Id { get; }
             public Action<Playlist> Action { get; }
 

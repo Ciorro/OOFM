@@ -20,6 +20,7 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
     private readonly IStationController _stationController;
     private readonly IRadioPlayer _radioPlayer;
     private readonly IStationItemFactory _stationItemFactory;
+
     [ObservableProperty]
     private CollectionView? _radioStations;
 

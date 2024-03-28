@@ -5,10 +5,53 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:OOFM.Ui.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.modernwpf.com/2019"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock Style="{StaticResource HeaderTextBlockStyle}">Home</TextBlock>
-    </Grid>
+    <DockPanel>
+        <Label
+            Margin="16"
+            Content="Strona główna"
+            DockPanel.Dock="Top"
+            FontSize="28"
+            FontWeight="Bold" />
+        <ScrollViewer>
+            <ui:SimpleStackPanel Margin="16,0" Spacing="8">
+                <GroupBox Header="Popularne teraz">
+                    <ListView
+                        ItemsSource="{Binding Featured}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        SelectedItem="{Binding SelectedStation, Delay=200}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:LayoutPanel Margin="0,0,16,16">
+                                    <ui:LayoutPanel.Layout>
+                                        <ui:UniformGridLayout
+                                            ItemsStretch="Fill"
+                                            MinColumnSpacing="8"
+                                            MinItemWidth="250"
+                                            MinRowSpacing="8" />
+                                    </ui:LayoutPanel.Layout>
+                                </ui:LayoutPanel>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Style.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="4" />
+                                    </Style>
+                                </Style.Resources>
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Height" Value="64" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </GroupBox>
+            </ui:SimpleStackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
