@@ -38,6 +38,14 @@ public class StationController : IStationController
         return (await GetAllStations(cancellationToken)).Where(s => slugs.Contains(s.Slug)).ToList();
     }
 
+    public async Task<IList<Station>> GetFeaturedStations(CancellationToken cancellationToken = default)
+    {
+        var featuredJson = await _client.Request("/radio/featured", cancellationToken);
+        var featuredIds = JsonSerializer.Deserialize<int[]>(featuredJson) ?? [];
+
+        return await GetStationsById(featuredIds, cancellationToken);
+    }
+
     public async Task<IList<Station>> GetAllStations(CancellationToken cancellationToken)
     {
         var content = await _client.Request($"/radio/stations", cancellationToken);

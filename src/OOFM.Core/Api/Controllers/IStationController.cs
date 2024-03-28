@@ -8,4 +8,5 @@ public interface IStationController
     Task<IList<Station>> GetStationsById(IEnumerable<int> ids, CancellationToken cancellationToken = default);
     Task<IList<Station>> GetStationsBySlug(IEnumerable<string> slugs, CancellationToken cancellationToken = default);
     Task<IList<Station>> GetAllStations(CancellationToken cancellationToken = default);
+    Task<IList<Station>> GetFeaturedStations(CancellationToken cancellationToken = default);
 }
