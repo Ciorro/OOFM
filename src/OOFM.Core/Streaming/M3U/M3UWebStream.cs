@@ -33,12 +33,15 @@
         {
             StopStreaming();
 
+            string token = Random.Shared.NextInt64().ToString();
+            streamUrl += $"?t={token}";
+
             _cts = new CancellationTokenSource();
             _streamTask = Task.Run(async () =>
             {
                 try
                 {
-                    await StreamLoop(streamUrl, _cts.Token);
+                    await StreamLoop(new Uri(streamUrl), _cts.Token);
                 }
                 catch(OperationCanceledException) { }
                 catch(Exception e)
@@ -56,10 +59,10 @@
             _buffer.Clear();
         }
 
-        private async Task StreamLoop(string streamUrl, CancellationToken cancellationToken)
+        private async Task StreamLoop(Uri streamUrl, CancellationToken cancellationToken)
         {
-            int urlBaseLength = streamUrl.LastIndexOf('/') + 1;
-            string baseUrl = streamUrl[..urlBaseLength];
+            int urlBaseLength = streamUrl.ToString().LastIndexOf('/') + 1;
+            string baseUrl = streamUrl.ToString()[..urlBaseLength];
 
             string m3uPlaylist = await _http.GetStringAsync(streamUrl, cancellationToken);
             string chunklistFilename = M3UParser.GetChunklistFilenameFromM3U(m3uPlaylist);
@@ -69,14 +72,14 @@
             while (!cancellationToken.IsCancellationRequested)
             {
                 var chunkInfos = await GetChunks(
-                    chunklistUrl: baseUrl + chunklistFilename,
+                    chunklistUrl: $"{baseUrl}/{chunklistFilename}{streamUrl.Query}",
                     sequenceStart: currentSequence + 1,
                     cancellationToken
                 );
 
                 foreach (var chunkInfo in chunkInfos)
                 {
-                    var data = await _http.GetByteArrayAsync(baseUrl + chunkInfo.Filename);
+                    var data = await _http.GetByteArrayAsync($"{baseUrl}/{chunkInfo.Filename}");
 
                     Write(data, 0, data.Length);
                     currentSequence = chunkInfo.Sequence;
