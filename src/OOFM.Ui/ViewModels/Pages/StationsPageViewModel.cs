@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core;
 using OOFM.Core.Api.Controllers;
-using OOFM.Ui.Attributes;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
+using OOFM.Ui.Navigation.Attributes;
 using OOFM.Ui.ViewModels.Items;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;

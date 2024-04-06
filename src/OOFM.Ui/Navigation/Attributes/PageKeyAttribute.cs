@@ -1,5 +1,5 @@
-﻿namespace OOFM.Ui.Attributes;
-[System.AttributeUsage(AttributeTargets.Class)]
+﻿namespace OOFM.Ui.Navigation.Attributes;
+[AttributeUsage(AttributeTargets.Class)]
 sealed class PageKeyAttribute : Attribute
 {
     public string PageKey { get; }

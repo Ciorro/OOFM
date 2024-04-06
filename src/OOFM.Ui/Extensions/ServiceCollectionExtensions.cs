@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OOFM.Ui.Attributes;
 using OOFM.Ui.Navigation;
+using OOFM.Ui.Navigation.Attributes;
 using System.Reflection;
 using WREdit.Base.Extensions;
 

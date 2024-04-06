@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using OOFM.Ui.Attributes;
 using OOFM.Ui.Navigation;
+using OOFM.Ui.Navigation.Attributes;
 
 namespace OOFM.Ui.ViewModels.Pages;
 
