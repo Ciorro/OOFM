@@ -91,15 +91,43 @@
                         ui:ControlHelper.CornerRadius="14"
                         FontSize="12"
                         IsChecked="{Binding IsCurrentSongFavorite}">
-                        <TextBlock>
-                            <Run>Dodaj do ulubionych</Run>
-                            <InlineUIContainer BaselineAlignment="TextBottom">
-                                <fic:SymbolIcon
-                                    FontSize="14"
-                                    IsFilled="True"
-                                    Symbol="Heart" />
-                            </InlineUIContainer>
-                        </TextBlock>
+                        <ToggleButton.Style>
+                            <Style BasedOn="{StaticResource DefaultToggleButtonStyle}" TargetType="ToggleButton">
+                                <Style.Triggers>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <TextBlock>
+                                                    <Run>Usuń z ulubionych</Run>
+                                                    <InlineUIContainer BaselineAlignment="TextBottom">
+                                                        <fic:SymbolIcon
+                                                            FontSize="14"
+                                                            IsFilled="True"
+                                                            Symbol="HeartBroken" />
+                                                    </InlineUIContainer>
+                                                </TextBlock>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="Content">
+                                            <Setter.Value>
+                                                <TextBlock>
+                                                    <Run>Dodaj do ulubionych</Run>
+                                                    <InlineUIContainer BaselineAlignment="TextBottom">
+                                                        <fic:SymbolIcon
+                                                            FontSize="14"
+                                                            IsFilled="True"
+                                                            Symbol="Heart" />
+                                                    </InlineUIContainer>
+                                                </TextBlock>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+
                     </ToggleButton>
                 </StackPanel>
             </Grid>
