@@ -89,7 +89,8 @@
                     <ToggleButton
                         Margin="0,12"
                         ui:ControlHelper.CornerRadius="14"
-                        FontSize="12">
+                        FontSize="12"
+                        IsChecked="{Binding IsCurrentSongFavorite}">
                         <TextBlock>
                             <Run>Dodaj do ulubionych</Run>
                             <InlineUIContainer BaselineAlignment="TextBottom">

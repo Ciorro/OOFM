@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using OOFM.Core;
 using OOFM.Core.Api.Controllers;
 using OOFM.Core.Api.Models;
+using OOFM.Core.Settings;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Navigation.Attributes;
@@ -22,6 +23,9 @@ namespace OOFM.Ui.ViewModels.Pages
         private readonly ICategoryController _categoryController;
         private readonly IStationItemFactory _stationItemFactory;
 
+        private readonly UserProfile _currentUserProfile;
+
+
         [ObservableProperty]
         private Station? _currentStation;
 
@@ -36,13 +40,38 @@ namespace OOFM.Ui.ViewModels.Pages
             IPlaylistService playlistService,
             IStationController stationController,
             ICategoryController categoryController,
-            IStationItemFactory stationItemFactory)
+            IStationItemFactory stationItemFactory,
+            IUserProfileService userProfileService)
         {
             _radioPlayer = radioPlayer;
             _playlistService = playlistService;
             _stationController = stationController;
             _categoryController = categoryController;
             _stationItemFactory = stationItemFactory;
+
+            _currentUserProfile = userProfileService.CurrentUserProfile ?? new();
+        }
+
+        public bool IsCurrentSongFavorite
+        {
+            get
+            {
+                return _currentUserProfile.FavoriteSongs.Contains(Playlist!.CurrentSong!) == true;
+            }
+            set
+            {
+                if (Playlist?.CurrentSong is not null)
+                {
+                    if (value)
+                    {
+                        _currentUserProfile.FavoriteSongs.Add(Playlist.CurrentSong);
+                    }
+                    else
+                    {
+                        _currentUserProfile.FavoriteSongs.Remove(Playlist.CurrentSong);
+                    }
+                }
+            }
         }
 
         [RelayCommand]
@@ -76,14 +105,14 @@ namespace OOFM.Ui.ViewModels.Pages
 
             if (CurrentStation is not null)
             {
-                _playlistService.Unsubscribe(CurrentStation.Id, OnPlaylistUpdated);
+                _playlistService.Unsubscribe(CurrentStation.Id, OnPlaylistChanged);
             }
 
             CurrentStation = station;
 
             if (station is not null)
             {
-                _playlistService.Subscribe(station.Id, OnPlaylistUpdated);
+                _playlistService.Subscribe(station.Id, OnPlaylistChanged);
                 Playlist = _playlistService.GetCurrentPlaylist(station.Id);
                 UpdateRecommendations(station);
             }
@@ -133,6 +162,10 @@ namespace OOFM.Ui.ViewModels.Pages
             return await _stationController.GetStationsById(recommendedStationsIds, cancellationToken);
         }
 
-        private void OnPlaylistUpdated(Playlist playlist) => Playlist = playlist;
+        partial void OnPlaylistChanged(Playlist? value)
+        {
+            Playlist = value;
+            OnPropertyChanged(nameof(IsCurrentSongFavorite));
+        }
     }
 }
