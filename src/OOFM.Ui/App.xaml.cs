@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using OOFM.Core;
 using OOFM.Core.Api;
 using OOFM.Core.Api.Controllers;
+using OOFM.Core.Settings;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
@@ -29,6 +30,7 @@ public partial class App : Application
 
             services.AddSingleton<IRadioPlayer, RadioPlayer>();
             services.AddHostedService<IPlaylistService, PlaylistService>();
+            services.AddSingleton<IUserProfileService, OSUserProfileService>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
@@ -50,12 +52,26 @@ public partial class App : Application
         _appHost.Start();
         _appHost.Services.GetRequiredService<FluentWindow>().Show();
 
+        LoadUserProfile();
+
         base.OnStartup(e);
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
+        SaveUserProfile();
+
         _appHost.Dispose();
         base.OnExit(e);
+    }
+
+    private void LoadUserProfile()
+    {
+        _appHost.Services.GetRequiredService<IUserProfileService>().LoadUserProfile();
+    }
+
+    private void SaveUserProfile()
+    {
+        _appHost.Services.GetRequiredService<IUserProfileService>().SaveUserProfile();
     }
 }
