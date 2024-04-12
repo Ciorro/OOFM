@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using OOFM.Core.Api.Controllers;
 using OOFM.Core.Api.Models;
-using System.Windows;
 
 namespace OOFM.Ui.Services
 {
@@ -44,15 +43,15 @@ namespace OOFM.Ui.Services
                 try
                 {
                     _playlists = await _playlistController.GetAllPlaylists(stoppingToken);
+                    
+                    foreach (var subscribtion in _subscribtions)
+                    {
+                        Notify(subscribtion);
+                    }
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show($"MESSAGE:\n{e.Message}\n\nHELP:\n{e.HelpLink}\n\nSTACK TRACE:\n{e.StackTrace}");
-                }
-
-                foreach (var subscribtion in _subscribtions)
-                {
-                    Notify(subscribtion);
+                    Console.WriteLine($"MESSAGE:\n{e.Message}\n\nHELP:\n{e.HelpLink}\n\nSTACK TRACE:\n{e.StackTrace}");
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(15));
@@ -62,9 +61,10 @@ namespace OOFM.Ui.Services
         private void Notify(Subscribtion subscribtion)
         {
             var playlist = GetCurrentPlaylist(subscribtion.Id);
+
             if (playlist is not null)
             {
-                subscribtion.Action.Invoke(playlist);
+                subscribtion.Action.Invoke(playlist ?? new());
             }
         }
 

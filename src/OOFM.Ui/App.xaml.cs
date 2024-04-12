@@ -31,6 +31,7 @@ public partial class App : Application
             services.AddSingleton<IRadioPlayer, RadioPlayer>();
             services.AddHostedService<IPlaylistService, PlaylistService>();
             services.AddSingleton<IUserProfileService, OSUserProfileService>();
+            services.AddSingleton<IStationDatabase, StationDatabase>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
@@ -47,12 +48,14 @@ public partial class App : Application
         }).Build();
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         _appHost.Start();
-        _appHost.Services.GetRequiredService<FluentWindow>().Show();
 
         LoadUserProfile();
+        await LoadStations();
+
+        _appHost.Services.GetRequiredService<FluentWindow>().Show();
 
         base.OnStartup(e);
     }
@@ -63,6 +66,18 @@ public partial class App : Application
 
         _appHost.Dispose();
         base.OnExit(e);
+    }
+
+    private async Task LoadStations()
+    {
+        var stationController = _appHost.Services.GetRequiredService<IStationController>();
+        var stations = await stationController.GetAllStations();
+
+        var stationDb = _appHost.Services.GetRequiredService<IStationDatabase>();
+        foreach (var station in stations)
+        {
+            stationDb.Add(station);
+        }
     }
 
     private void LoadUserProfile()

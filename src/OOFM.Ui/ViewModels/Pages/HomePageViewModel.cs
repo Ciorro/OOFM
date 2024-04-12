@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core;
 using OOFM.Core.Api.Controllers;
+using OOFM.Core.Api.Models;
 using OOFM.Core.Settings;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
@@ -47,8 +48,6 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
         _playlistService = playlistService;
 
         _currentUserProfile = userProfileService.CurrentUserProfile ?? new();
-
-        _playlistService.PlaylistsUpdated += OnPlaylistsUpdated;
     }
 
     public void OnResumed()
@@ -63,6 +62,7 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
             try
             {
                 await RefreshFeaturedStations();
+                RefreshRecommendedStations();
             }
             catch { }
         });
@@ -82,20 +82,40 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
         });
     }
 
-    private void OnPlaylistsUpdated()
+    private void RefreshRecommendedStations()
     {
+        var recommendedStations = _stationDatabase.Where(station =>
+        {
+            var playlist = _playlistService.GetCurrentPlaylist(station.Id);
 
+            if (_currentUserProfile.FavoriteSongs.Contains(playlist?.CurrentSong!) ||
+                _currentUserProfile.FavoriteSongs.Overlaps(playlist?.Queue!))
+            {
+                return true;
+            }
+
+            return false;
+        });
+
+        RecommendedStations = new ObservableCollection<StationItemViewModel>(recommendedStations.Select(s =>
+        {
+            return _stationItemFactory.Create(s);
+        }));
     }
 
-    partial void OnSelectedStationChanged(StationItemViewModel? value)
+    partial void OnSelectedStationChanged(StationItemViewModel? oldValue, StationItemViewModel? newValue)
     {
-        if (value is null)
+        if (newValue is null)
         {
-            _radioPlayer.Stop();
+            // If the station disappeared from the recommended list, don't stop it.
+            if (RecommendedStations?.Contains(oldValue!) == true)
+            {
+                _radioPlayer.Stop();
+            }
         }
         else
         {
-            _radioPlayer.Play(value.Station!);
+            _radioPlayer.Play(newValue.Station!);
         }
     }
 }

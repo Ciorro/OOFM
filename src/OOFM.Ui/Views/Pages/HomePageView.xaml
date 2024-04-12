@@ -20,8 +20,43 @@
             <ui:SimpleStackPanel Margin="16,0" Spacing="8">
                 <GroupBox Header="Popularne teraz">
                     <ListView
-                        ItemsSource="{Binding Featured}"
+                        ItemsSource="{Binding FeaturedStations}"
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        SelectedItem="{Binding SelectedStation, Delay=200}">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:LayoutPanel Margin="0,0,16,16">
+                                    <ui:LayoutPanel.Layout>
+                                        <ui:UniformGridLayout
+                                            ItemsStretch="Fill"
+                                            MinColumnSpacing="8"
+                                            MinItemWidth="250"
+                                            MinRowSpacing="8" />
+                                    </ui:LayoutPanel.Layout>
+                                </ui:LayoutPanel>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
+                                <Style.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="4" />
+                                    </Style>
+                                </Style.Resources>
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Height" Value="64" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </GroupBox>
+                <GroupBox Header="Wybrane dla Ciebie">
+                    <ListView
+                        ItemsSource="{Binding RecommendedStations}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         SelectedItem="{Binding SelectedStation, Delay=200}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
