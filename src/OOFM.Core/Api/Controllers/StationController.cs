@@ -18,32 +18,12 @@ public class StationController : IStationController
         };
     }
 
-    public async Task<Station> GetStationById(int id, CancellationToken cancellationToken = default)
-    {
-        return (await GetAllStations(cancellationToken)).First(s => s.Id == id);
-    }
-
-    public async Task<Station> GetStationBySlug(string slug, CancellationToken cancellationToken = default)
-    {
-        return (await GetAllStations(cancellationToken)).First(s => s.Slug == slug);
-    }
-
-    public async Task<IList<Station>> GetStationsById(IEnumerable<int> ids, CancellationToken cancellationToken = default)
-    {
-        return (await GetAllStations(cancellationToken)).Where(s => ids.Contains(s.Id)).ToList();
-    }
-
-    public async Task<IList<Station>> GetStationsBySlug(IEnumerable<string> slugs, CancellationToken cancellationToken = default)
-    {
-        return (await GetAllStations(cancellationToken)).Where(s => slugs.Contains(s.Slug)).ToList();
-    }
-
-    public async Task<IList<Station>> GetFeaturedStations(CancellationToken cancellationToken = default)
+    public async Task<int[]> GetFeaturedStations(CancellationToken cancellationToken = default)
     {
         var featuredJson = await _client.Request("/radio/featured", cancellationToken);
         var featuredIds = JsonSerializer.Deserialize<int[]>(featuredJson) ?? [];
 
-        return await GetStationsById(featuredIds, cancellationToken);
+        return featuredIds;
     }
 
     public async Task<IList<Station>> GetAllStations(CancellationToken cancellationToken)

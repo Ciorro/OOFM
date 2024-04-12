@@ -1,20 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core;
-using OOFM.Core.Api.Controllers;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Navigation.Attributes;
 using OOFM.Ui.ViewModels.Items;
 using System.Collections.ObjectModel;
-using System.Windows.Threading;
 
 namespace OOFM.Ui.ViewModels.Pages;
 
 [PageKey("stations-list")]
 internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 {
-    private readonly IStationController _stationController;
     private readonly IRadioPlayer _radioPlayer;
+    private readonly IStationDatabase _stationDatabase;
     private readonly IStationItemFactory _stationItemFactory;
 
     [ObservableProperty]
@@ -25,32 +23,20 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 
     public StationsPageViewModel(
         IRadioPlayer radioPlayer,
-        IStationController stationController,
+        IStationDatabase stationDatabase,
         IStationItemFactory stationItemFactory)
     {
-        _stationController = stationController;
+        _stationDatabase = stationDatabase;
         _stationItemFactory = stationItemFactory;
         _radioPlayer = radioPlayer;
     }
 
     public void OnInitialized()
     {
-        Task.Run(async () =>
+        RadioStations = new ObservableCollection<StationItemViewModel>(_stationDatabase.Select(s =>
         {
-            try
-            {
-                var stations = await _stationController.GetAllStations();
-
-                Dispatcher.CurrentDispatcher.Invoke(() =>
-                {
-                    RadioStations = new ObservableCollection<StationItemViewModel>(stations.Select(s =>
-                    {
-                        return _stationItemFactory.Create(s);
-                    }));
-                });
-            }
-            catch { }
-        });
+            return _stationItemFactory.Create(s);
+        }));
     }
 
     public void OnResumed()

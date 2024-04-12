@@ -19,6 +19,7 @@ namespace OOFM.Ui.ViewModels.Pages
     {
         private readonly IRadioPlayer _radioPlayer;
         private readonly IPlaylistService _playlistService;
+        private readonly IStationDatabase _stationDatabase;
         private readonly IStationController _stationController;
         private readonly ICategoryController _categoryController;
         private readonly IStationItemFactory _stationItemFactory;
@@ -38,6 +39,7 @@ namespace OOFM.Ui.ViewModels.Pages
         public PlayerPageViewModel(
             IRadioPlayer radioPlayer,
             IPlaylistService playlistService,
+            IStationDatabase stationDatabase,
             IStationController stationController,
             ICategoryController categoryController,
             IStationItemFactory stationItemFactory,
@@ -45,6 +47,7 @@ namespace OOFM.Ui.ViewModels.Pages
         {
             _radioPlayer = radioPlayer;
             _playlistService = playlistService;
+            _stationDatabase = stationDatabase;
             _stationController = stationController;
             _categoryController = categoryController;
             _stationItemFactory = stationItemFactory;
@@ -159,7 +162,7 @@ namespace OOFM.Ui.ViewModels.Pages
                 }
             }
 
-            return await _stationController.GetStationsById(recommendedStationsIds, cancellationToken);
+            return _stationDatabase.GetStationsById(recommendedStationsIds.ToArray());
         }
 
         partial void OnPlaylistChanged(Playlist? value)
