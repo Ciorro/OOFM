@@ -60,10 +60,9 @@
                 </TextBlock>
                 <DockPanel LastChildFill="False">
                     <ui:SimpleStackPanel
-                        Margin="8"
+                        Margin="8,16"
                         DockPanel.Dock="Top"
                         Spacing="4">
-                        <ui:AutoSuggestBox Margin="0,10" PlaceholderText="Szukaj..." />
                         <c:NavigationButton
                             Command="{Binding NavigateCommand}"
                             CommandParameter="home"
