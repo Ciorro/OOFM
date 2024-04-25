@@ -16,9 +16,6 @@ internal partial class ApplicationViewModel : ObservableObject
     private readonly INavigationService _navigationService;
 
     [ObservableProperty]
-    private bool _isPlaybackEnabled;
-
-    [ObservableProperty]
     private StationItemViewModel? _currentStation;
 
     public ApplicationViewModel(
@@ -33,12 +30,10 @@ internal partial class ApplicationViewModel : ObservableObject
 
         _radioPlayer.PlaybackStarted += (station) =>
         {
-            IsPlaybackEnabled = true;
             CurrentStation = _stationItemFactory.Create(station);
         };
         _radioPlayer.PlaybackStopped += (_) =>
         {
-            IsPlaybackEnabled = false;
             CurrentStation = null;
         };
 
@@ -72,11 +67,5 @@ internal partial class ApplicationViewModel : ObservableObject
     private void NavigateNext()
     {
         _navigationService.Next();
-    }
-
-    [RelayCommand]
-    private void PlaybackToggled(bool isEnabled)
-    {
-        Console.WriteLine(isEnabled);
     }
 }

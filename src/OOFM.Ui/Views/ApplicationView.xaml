@@ -126,15 +126,6 @@
 
         <Grid Grid.Column="2">
             <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
-            <ToggleButton
-                Margin="20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding PlaybackToggledCommand}"
-                CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
-                IsChecked="{Binding IsPlaybackEnabled}"
-                Style="{StaticResource PlayButtonStyle}"
-                Visibility="{Binding CurrentStation, Converter={conv:NullVisibilityConverter}}" />
         </Grid>
     </Grid>
 </UserControl>

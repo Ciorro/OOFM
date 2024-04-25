@@ -2,7 +2,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Themes/ThemeExtensions.xaml" />
         <ResourceDictionary Source="/Themes/NavigationButton.xaml" />
-        <ResourceDictionary Source="/Themes/PlayButtonStyle.xaml" />
         <ResourceDictionary Source="/Themes/GroupBoxStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
