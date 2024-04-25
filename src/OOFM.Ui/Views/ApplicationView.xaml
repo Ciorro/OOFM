@@ -39,13 +39,12 @@
         <Border
             Grid.Row="0"
             Grid.RowSpan="2"
-            Grid.ColumnSpan="2"
             Background="{DynamicResource LayerFillColorDefaultBrush}"
             BorderBrush="{DynamicResource LayerFillColorAltBrush}"
             BorderThickness="0,0,1,0">
             <DockPanel>
                 <TextBlock
-                    Margin="20,10"
+                    Margin="20,10,15,10"
                     DockPanel.Dock="Top"
                     Foreground="{DynamicResource TextControlForeground}">
                     <InlineUIContainer BaselineAlignment="Center">
@@ -88,12 +87,6 @@
                             Content="Historia"
                             GroupName="Navigation"
                             Icon="History" />
-                        <!--<c:NavigationButton
-                            Command="{Binding NavigateCommand}"
-                            CommandParameter="blacklist"
-                            Content="Czarna lista"
-                            GroupName="Navigation"
-                            Icon="DismissSquareMultiple" />-->
                     </ui:SimpleStackPanel>
                     <ui:SimpleStackPanel
                         Margin="8"
@@ -118,14 +111,14 @@
             </DockPanel>
         </Border>
 
+        <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
+        </Grid>
+
         <GridSplitter
             Grid.Column="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
-
-        <Grid Grid.Column="2">
-            <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
-        </Grid>
     </Grid>
 </UserControl>
