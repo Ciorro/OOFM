@@ -4,10 +4,10 @@ using OOFM.Core;
 using OOFM.Core.Api.Controllers;
 using OOFM.Core.Api.Models;
 using OOFM.Core.Settings;
+using OOFM.Core.Services;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Navigation.Attributes;
-using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels.Items;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
@@ -15,7 +15,7 @@ using System.Windows.Threading;
 namespace OOFM.Ui.ViewModels.Pages
 {
     [PageKey("player")]
-    internal partial class PlayerPageViewModel : ObservableObject, INavigationPage
+    internal partial class PlayerPageViewModel : ObservableObject, IDisposable, INavigationPage
     {
         private readonly IRadioPlayer _radioPlayer;
         private readonly IPlaylistService _playlistService;
@@ -53,6 +53,8 @@ namespace OOFM.Ui.ViewModels.Pages
             _stationItemFactory = stationItemFactory;
 
             _currentUserProfile = userProfileService.CurrentUserProfile ?? new();
+
+            _playlistService.PlaylistUpdated += OnPlaylistUpdated;
         }
 
         public bool IsCurrentSongFavorite
@@ -106,17 +108,11 @@ namespace OOFM.Ui.ViewModels.Pages
                 return;
             }
 
-            if (CurrentStation is not null)
-            {
-                _playlistService.Unsubscribe(CurrentStation.Id, OnPlaylistChanged);
-            }
-
             CurrentStation = station;
 
             if (station is not null)
             {
-                _playlistService.Subscribe(station.Id, OnPlaylistChanged);
-                Playlist = _playlistService.GetCurrentPlaylist(station.Id);
+                OnPlaylistUpdated();
                 UpdateRecommendations(station);
             }
         }
@@ -165,10 +161,23 @@ namespace OOFM.Ui.ViewModels.Pages
             return _stationDatabase.GetStationsById(recommendedStationsIds.ToArray());
         }
 
+        private void OnPlaylistUpdated()
+        {
+            if (CurrentStation is not null)
+            {
+                Playlist = _playlistService.GetPlaylist(CurrentStation.Id);
+            }
+        }
+
         partial void OnPlaylistChanged(Playlist? value)
         {
             Playlist = value;
             OnPropertyChanged(nameof(IsCurrentSongFavorite));
+        }
+
+        public void Dispose()
+        {
+            _playlistService.PlaylistUpdated -= OnPlaylistUpdated;
         }
     }
 }

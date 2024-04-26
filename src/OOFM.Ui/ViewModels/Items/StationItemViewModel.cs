@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core.Api.Models;
-using OOFM.Ui.Services;
+using OOFM.Core.Services;
 
 namespace OOFM.Ui.ViewModels.Items;
 
-internal partial class StationItemViewModel : ObservableObject, IEquatable<StationItemViewModel>
+internal partial class StationItemViewModel : ObservableObject, IDisposable, IEquatable<StationItemViewModel>
 {
     private readonly IPlaylistService _playlistService;
 
@@ -17,6 +17,7 @@ internal partial class StationItemViewModel : ObservableObject, IEquatable<Stati
     public StationItemViewModel(IPlaylistService playlistService)
     {
         _playlistService = playlistService;
+        _playlistService.PlaylistUpdated += OnPlaylistUpdated;
     }
 
     private Station? _station;
@@ -28,14 +29,18 @@ internal partial class StationItemViewModel : ObservableObject, IEquatable<Stati
             ArgumentNullException.ThrowIfNull(value);
             _station ??= value;
 
-            _playlistService.Subscribe(value.Id, OnPlaylistRefreshed);
-            OnPlaylistRefreshed(_playlistService.GetCurrentPlaylist(value.Id)!);
+            OnPlaylistUpdated();
         }
     }
 
-    private void OnPlaylistRefreshed(Playlist playlist)
+    private void OnPlaylistUpdated()
     {
-        Playlist = playlist;
+        Playlist = _playlistService.GetPlaylist(Station.Id);
+    }
+
+    public void Dispose()
+    {
+        _playlistService.PlaylistUpdated -= OnPlaylistUpdated;
     }
 
     #region Equatable

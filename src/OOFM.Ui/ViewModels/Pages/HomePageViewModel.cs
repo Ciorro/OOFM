@@ -1,12 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core;
 using OOFM.Core.Api.Controllers;
-using OOFM.Core.Api.Models;
 using OOFM.Core.Settings;
+using OOFM.Core.Services;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Navigation.Attributes;
-using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels.Items;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
@@ -14,7 +13,7 @@ using System.Windows.Threading;
 namespace OOFM.Ui.ViewModels.Pages;
 
 [PageKey("home")]
-internal partial class HomePageViewModel : ObservableObject, INavigationPage
+internal partial class HomePageViewModel : ObservableObject, IDisposable, INavigationPage
 {
     private readonly IRadioPlayer _radioPlayer;
     private readonly IStationDatabase _stationDatabase;
@@ -86,7 +85,7 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
     {
         var recommendedStations = _stationDatabase.Where(station =>
         {
-            var playlist = _playlistService.GetCurrentPlaylist(station.Id);
+            var playlist = _playlistService.GetPlaylist(station.Id);
 
             if (_currentUserProfile.FavoriteSongs.Contains(playlist?.CurrentSong!) ||
                 _currentUserProfile.FavoriteSongs.Overlaps(playlist?.Queue!))
@@ -116,6 +115,19 @@ internal partial class HomePageViewModel : ObservableObject, INavigationPage
         else
         {
             _radioPlayer.Play(newValue.Station!);
+        }
+    }
+
+    public void Dispose()
+    {
+        foreach (var featuredStation in FeaturedStations ?? [])
+        {
+            featuredStation.Dispose();
+        }
+
+        foreach (var recommendedStation in RecommendedStations ?? [])
+        {
+            recommendedStation.Dispose();
         }
     }
 }

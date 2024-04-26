@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using OOFM.Core;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
-using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels.Items;
 
 namespace OOFM.Ui.ViewModels;

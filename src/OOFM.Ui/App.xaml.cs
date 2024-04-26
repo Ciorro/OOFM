@@ -4,10 +4,10 @@ using OOFM.Core;
 using OOFM.Core.Api;
 using OOFM.Core.Api.Controllers;
 using OOFM.Core.Settings;
+using OOFM.Core.Services;
 using OOFM.Ui.Extensions;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
-using OOFM.Ui.Services;
 using OOFM.Ui.ViewModels;
 using OOFM.Ui.Windows;
 using System.Windows;
@@ -29,9 +29,9 @@ public partial class App : Application
             services.AddSingleton<IPlaylistController, PlaylistController>();
 
             services.AddSingleton<IRadioPlayer, RadioPlayer>();
-            services.AddHostedService<IPlaylistService, PlaylistService>();
-            services.AddSingleton<IUserProfileService, OSUserProfileService>();
             services.AddSingleton<IStationDatabase, StationDatabase>();
+            services.AddSingleton<IUserProfileService, OSUserProfileService>();
+            services.AddHostedService<IPlaylistService, PlaylistService>();
 
             services.AddPages();
             services.AddSingleton<IPageFactory, PageFactory>();
@@ -54,6 +54,7 @@ public partial class App : Application
 
         LoadUserProfile();
         await LoadStations();
+        await LoadPlaylist();
 
         _appHost.Services.GetRequiredService<FluentWindow>().Show();
 
@@ -78,6 +79,15 @@ public partial class App : Application
         {
             stationDb.Add(station);
         }
+    }
+
+    private async Task LoadPlaylist()
+    {
+        var playlistController = _appHost.Services.GetRequiredService<IPlaylistController>();
+        var playlist = await playlistController.GetAllPlaylists();
+
+        var playlistService = _appHost.Services.GetRequiredService<IPlaylistService>();
+        playlistService.Playlist = playlist;
     }
 
     private void LoadUserProfile()
