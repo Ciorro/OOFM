@@ -115,14 +115,16 @@
         <Grid Grid.Column="1" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="64" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
             <Border
                 Grid.Row="1"
+                Height="64"
                 Background="{DynamicResource LayerFillColorDefaultBrush}"
                 BorderBrush="{DynamicResource LayerFillColorAltBrush}"
-                BorderThickness="0,1,0,0">
+                BorderThickness="0,1,0,0"
+                Visibility="{Binding CurrentStation, Converter={conv:NullVisibilityConverter}}">
                 <Grid Margin="8,0">
                     <ui:SimpleStackPanel
                         HorizontalAlignment="Center"
