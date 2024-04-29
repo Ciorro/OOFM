@@ -6,6 +6,7 @@
     xmlns:conv="clr-namespace:OOFM.Ui.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:e="clr-namespace:OOFM.Ui.Navigation.Events"
+    xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:OOFM.Ui.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -112,7 +113,108 @@
         </Border>
 
         <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="64" />
+            </Grid.RowDefinitions>
             <ContentControl Margin="0,32,0,0" Content="{Binding CurrentPage}" />
+            <Border
+                Grid.Row="1"
+                Background="{DynamicResource LayerFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource LayerFillColorAltBrush}"
+                BorderThickness="0,1,0,0">
+                <Grid Margin="8,0">
+                    <ui:SimpleStackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <Button Padding="8" Background="Transparent">
+                            <fic:SymbolIcon
+                                FontSize="16"
+                                IsFilled="True"
+                                Symbol="Previous" />
+                        </Button>
+                        <Border
+                            Width="44"
+                            Height="44"
+                            VerticalAlignment="Center"
+                            BorderBrush="{DynamicResource SystemAccentColorDark1Brush}"
+                            BorderThickness="2"
+                            CornerRadius="99">
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ui:ControlHelper.CornerRadius="99"
+                                Background="Transparent"
+                                Command="{Binding RadiostopCommand}">
+                                <fic:SymbolIcon
+                                    FontSize="20"
+                                    IsFilled="True"
+                                    Symbol="Stop" />
+                            </Button>
+                        </Border>
+                        <Button Padding="8" Background="Transparent">
+                            <fic:SymbolIcon
+                                FontSize="16"
+                                IsFilled="True"
+                                Symbol="Next" />
+                        </Button>
+                    </ui:SimpleStackPanel>
+
+                    <Button
+                        Padding="4"
+                        HorizontalAlignment="Right"
+                        Background="Transparent">
+                        <fic:SymbolIcon FontSize="20" Symbol="Speaker2" />
+
+                        <ui:FlyoutService.Flyout>
+                            <ui:Flyout Placement="TopEdgeAlignedRight">
+                                <ui:SimpleStackPanel
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="8">
+                                    <ToggleButton
+                                        Padding="4"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"
+                                        IsChecked="{Binding IsMuted}">
+                                        <ToggleButton.Style>
+                                            <Style BasedOn="{StaticResource DefaultToggleButtonStyle}" TargetType="ToggleButton">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <fic:SymbolIcon FontSize="20" Symbol="SpeakerMute" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="False">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <fic:SymbolIcon FontSize="20" Symbol="Speaker2" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <Slider
+                                        Width="200"
+                                        VerticalAlignment="Center"
+                                        LargeChange="0.1"
+                                        Maximum="1"
+                                        Minimum="0"
+                                        SmallChange="0.01"
+                                        Value="{Binding Volume}" />
+                                </ui:SimpleStackPanel>
+                            </ui:Flyout>
+                        </ui:FlyoutService.Flyout>
+                    </Button>
+                </Grid>
+            </Border>
         </Grid>
 
         <GridSplitter

@@ -50,6 +50,18 @@ internal partial class ApplicationViewModel : ObservableObject
         get => _navigationService.CurrentPage;
     }
 
+    public float Volume
+    {
+        get => _radioPlayer.Volume;
+        set => _radioPlayer.Volume = value;
+    }
+
+    public bool IsMuted
+    {
+        get => _radioPlayer.IsMuted;
+        set => _radioPlayer.IsMuted = value;
+    }
+
     [RelayCommand]
     private void Navigate(string pageKey)
     {
@@ -66,5 +78,11 @@ internal partial class ApplicationViewModel : ObservableObject
     private void NavigateNext()
     {
         _navigationService.Next();
+    }
+
+    [RelayCommand]
+    private void Radiostop()
+    {
+        _radioPlayer.Stop();
     }
 }

@@ -18,6 +18,8 @@ public class RadioPlayer : IRadioPlayer
     private Task? _streamTask;
 
     public Station? CurrentStation { get; private set; }
+    public float Volume { get; set; } = 1;
+    public bool IsMuted { get; set; } = false;
 
     public RadioPlayer(IHttpClientProvider httpClientProvider)
     {
@@ -86,6 +88,8 @@ public class RadioPlayer : IRadioPlayer
 
             while (!cancellationToken.IsCancellationRequested)
             {
+                player.Volume = IsMuted ? 0 : Volume;
+
                 int read;
 
                 if ((read = _m3uStream.Read(buffer, 0, buffer.Length)) > 0)
