@@ -1,5 +1,4 @@
 ﻿using ModernWpf;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -18,25 +17,12 @@ public partial class FluentWindow : Window
         nint hWnd = new WindowInteropHelper(this).EnsureHandle();
 
         SetWindowTheme(hWnd);
-        EnableMica(hWnd);
         ExtendGlassFrame();
 
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
         {
             SetWindowTheme(hWnd);
         };
-    }
-
-    private void EnableMica(nint hWnd)
-    {
-        uint micaValue = 2;
-
-        DwmSetWindowAttribute(
-            hWnd: hWnd,
-            dwAttribute: DWMWA_SYSTEM_BACKDROP_TYPE,
-            pvAttribute: ref micaValue,
-            cbAttribute: Marshal.SizeOf<uint>()
-        );
     }
 
     private void SetWindowTheme(nint hWnd, ApplicationTheme? theme = null)
@@ -57,6 +43,18 @@ public partial class FluentWindow : Window
             pvAttribute: ref captionColor,
             cbAttribute: Marshal.SizeOf<uint>()
         );
+
+        // Windows 10
+        if (Environment.OSVersion.Version.Major == 10 && Environment.OSVersion.Version.Build < 22000)
+        {
+            EnableAcrylic(hWnd, themeValue != 0);
+        }
+
+        // Windows 11
+        if (Environment.OSVersion.Version.Major == 10 && Environment.OSVersion.Version.Build >= 22000)
+        {
+            EnableMica(hWnd);
+        }
     }
 
     private void ExtendGlassFrame()
@@ -71,5 +69,42 @@ public partial class FluentWindow : Window
         {
             Container.Margin = new Thickness(WindowState == WindowState.Maximized ? 8 : 0);
         };
+    }
+
+    private void EnableMica(nint hWnd)
+    {
+        uint micaValue = 2;
+
+        DwmSetWindowAttribute(
+            hWnd: hWnd,
+            dwAttribute: DWMWA_SYSTEM_BACKDROP_TYPE,
+            pvAttribute: ref micaValue,
+            cbAttribute: Marshal.SizeOf<uint>()
+        );
+    }
+
+    private void EnableAcrylic(nint hWnd, bool dark)
+    {
+        var accentPolicy = new ACCENTPOLICY()
+        {
+            nAccentState = ACCENT_ENABLE_GRADIENT,
+            nFlags = 2,
+            nColor = dark ? 0x00040404 : 0x00EEEEEE
+        };
+
+        int accentPolicySize = Marshal.SizeOf<ACCENTPOLICY>();
+        nint accentPolicyPtr = Marshal.AllocHGlobal(accentPolicySize);
+        Marshal.StructureToPtr(accentPolicy, accentPolicyPtr, false);
+
+        var data = new WINCOMPATTRDATA()
+        {
+            nAttribute = WCA_ACCENT_POLICY,
+            pData = accentPolicyPtr,
+            cbSize = accentPolicySize
+        };
+
+        SetWindowCompositionAttribute(hWnd, ref data);
+
+        Marshal.FreeHGlobal(accentPolicyPtr);
     }
 }
