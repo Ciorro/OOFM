@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OOFM.Core;
+using OOFM.Core.Settings;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.ViewModels.Items;
@@ -13,6 +14,7 @@ internal partial class ApplicationViewModel : ObservableObject
     private readonly IRadioPlayer _radioPlayer;
     private readonly IStationItemFactory _stationItemFactory;
     private readonly INavigationService _navigationService;
+    private readonly UserProfile _currentUserProfile;
 
     [ObservableProperty]
     private StationItemViewModel? _currentStation;
@@ -21,11 +23,16 @@ internal partial class ApplicationViewModel : ObservableObject
         IPageFactory pageFactory,
         IRadioPlayer radioPlayer,
         INavigationService navigationService,
-        IStationItemFactory stationItemFactory)
+        IStationItemFactory stationItemFactory,
+        IUserProfileService userProfileService)
     {
         _pageFactory = pageFactory;
         _radioPlayer = radioPlayer;
         _stationItemFactory = stationItemFactory;
+
+        _currentUserProfile = userProfileService.CurrentUserProfile ?? new();
+        Volume = _currentUserProfile.Volume;
+        IsMuted = _currentUserProfile.IsMuted;
 
         _radioPlayer.PlaybackStarted += (station) =>
         {
@@ -53,13 +60,21 @@ internal partial class ApplicationViewModel : ObservableObject
     public float Volume
     {
         get => _radioPlayer.Volume;
-        set => _radioPlayer.Volume = value;
+        set
+        {
+            _radioPlayer.Volume = value;
+            _currentUserProfile.Volume = value;
+        }
     }
 
     public bool IsMuted
     {
         get => _radioPlayer.IsMuted;
-        set => _radioPlayer.IsMuted = value;
+        set
+        {
+            _radioPlayer.IsMuted = value;
+            _currentUserProfile.IsMuted = value;
+        }
     }
 
     [RelayCommand]
