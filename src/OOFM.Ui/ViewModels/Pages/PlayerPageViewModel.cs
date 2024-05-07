@@ -171,7 +171,6 @@ namespace OOFM.Ui.ViewModels.Pages
 
         partial void OnPlaylistChanged(Playlist? value)
         {
-            Playlist = value;
             OnPropertyChanged(nameof(IsCurrentSongFavorite));
         }
 
