@@ -28,7 +28,7 @@ public partial class App : Application
             services.AddSingleton<ICategoryController, CategoryController>();
             services.AddSingleton<IPlaylistController, PlaylistController>();
 
-            services.AddSingleton<IRadioPlayer, RadioPlayer>();
+            services.AddSingleton<IRadioService, RadioService>();
             services.AddSingleton<IStationDatabase, StationDatabase>();
             services.AddSingleton<IUserProfileService, OSUserProfileService>();
             services.AddHostedService<IPlaylistService, PlaylistService>();
@@ -77,7 +77,7 @@ public partial class App : Application
         var stationDb = _appHost.Services.GetRequiredService<IStationDatabase>();
         foreach (var station in stations)
         {
-            stationDb.Add(station);
+            stationDb.AddStation(station);
         }
     }
 

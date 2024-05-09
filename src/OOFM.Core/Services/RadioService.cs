@@ -5,9 +5,9 @@ using OOFM.Core.Streaming.Decoding;
 using OOFM.Core.Streaming.M3U;
 using OOFM.Core.Streaming.Playback;
 
-namespace OOFM.Core;
+namespace OOFM.Core.Services;
 
-public class RadioPlayer : IRadioPlayer
+public class RadioService : IRadioService
 {
     private readonly M3UWebStream _m3uStream;
 
@@ -21,7 +21,7 @@ public class RadioPlayer : IRadioPlayer
     public float Volume { get; set; } = 1;
     public bool IsMuted { get; set; } = false;
 
-    public RadioPlayer(IHttpClientProvider httpClientProvider)
+    public RadioService(IHttpClientProvider httpClientProvider)
     {
         _m3uStream = new M3UWebStream(httpClientProvider.GetHttpClient(), 262144 /*256kb*/);
     }

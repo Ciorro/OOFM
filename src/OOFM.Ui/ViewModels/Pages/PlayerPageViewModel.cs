@@ -17,7 +17,7 @@ namespace OOFM.Ui.ViewModels.Pages
     [PageKey("player")]
     internal partial class PlayerPageViewModel : ObservableObject, IDisposable, INavigationPage
     {
-        private readonly IRadioPlayer _radioPlayer;
+        private readonly IRadioService _radioService;
         private readonly IPlaylistService _playlistService;
         private readonly IStationDatabase _stationDatabase;
         private readonly IStationController _stationController;
@@ -37,7 +37,7 @@ namespace OOFM.Ui.ViewModels.Pages
         private ObservableCollection<StationItemViewModel>? _recommendedStations;
 
         public PlayerPageViewModel(
-            IRadioPlayer radioPlayer,
+            IRadioService radioService,
             IPlaylistService playlistService,
             IStationDatabase stationDatabase,
             IStationController stationController,
@@ -45,7 +45,7 @@ namespace OOFM.Ui.ViewModels.Pages
             IStationItemFactory stationItemFactory,
             IUserProfileService userProfileService)
         {
-            _radioPlayer = radioPlayer;
+            _radioService = radioService;
             _playlistService = playlistService;
             _stationDatabase = stationDatabase;
             _stationController = stationController;
@@ -86,14 +86,14 @@ namespace OOFM.Ui.ViewModels.Pages
             {
                 var station = stationItemViewModel.Station;
 
-                _radioPlayer.Play(station);
+                _radioService.Play(station);
                 SetStation(station);
             }
         }
 
         public void OnResumed()
         {
-            SetStation(_radioPlayer.CurrentStation);
+            SetStation(_radioService.CurrentStation);
         }
 
         public void OnPaused()

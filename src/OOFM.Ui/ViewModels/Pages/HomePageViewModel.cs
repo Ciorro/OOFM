@@ -15,7 +15,7 @@ namespace OOFM.Ui.ViewModels.Pages;
 [PageKey("home")]
 internal partial class HomePageViewModel : ObservableObject, IDisposable, INavigationPage
 {
-    private readonly IRadioPlayer _radioPlayer;
+    private readonly IRadioService _radioService;
     private readonly IStationDatabase _stationDatabase;
     private readonly IStationController _stationController;
     private readonly IStationItemFactory _stationItemFactory;
@@ -33,14 +33,14 @@ internal partial class HomePageViewModel : ObservableObject, IDisposable, INavig
     private StationItemViewModel? _selectedStation;
 
     public HomePageViewModel(
-        IRadioPlayer radioPlayer,
+        IRadioService radioService,
         IStationDatabase stationDatabase,
         IStationController stationController,
         IStationItemFactory stationItemFactory,
         IPlaylistService playlistService,
         IUserProfileService userProfileService)
     {
-        _radioPlayer = radioPlayer;
+        _radioService = radioService;
         _stationDatabase = stationDatabase;
         _stationController = stationController;
         _stationItemFactory = stationItemFactory;
@@ -51,9 +51,9 @@ internal partial class HomePageViewModel : ObservableObject, IDisposable, INavig
 
     public void OnResumed()
     {
-        if (_radioPlayer.CurrentStation is not null)
+        if (_radioService.CurrentStation is not null)
         {
-            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
+            SelectedStation = _stationItemFactory.Create(_radioService.CurrentStation);
         }
 
         Task.Run(async () =>
@@ -109,12 +109,12 @@ internal partial class HomePageViewModel : ObservableObject, IDisposable, INavig
             // If the station disappeared from the recommended list, don't stop it.
             if (RecommendedStations?.Contains(oldValue!) == true)
             {
-                _radioPlayer.Stop();
+                _radioService.Stop();
             }
         }
         else
         {
-            _radioPlayer.Play(newValue.Station!);
+            _radioService.Play(newValue.Station!);
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OOFM.Core;
+using OOFM.Core.Services;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
 using OOFM.Ui.Navigation.Attributes;
@@ -11,7 +12,7 @@ namespace OOFM.Ui.ViewModels.Pages;
 [PageKey("stations-list")]
 internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 {
-    private readonly IRadioPlayer _radioPlayer;
+    private readonly IRadioService _radioService;
     private readonly IStationDatabase _stationDatabase;
     private readonly IStationItemFactory _stationItemFactory;
 
@@ -22,13 +23,13 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
     private StationItemViewModel? _selectedStation;
 
     public StationsPageViewModel(
-        IRadioPlayer radioPlayer,
+        IRadioService radioService,
         IStationDatabase stationDatabase,
         IStationItemFactory stationItemFactory)
     {
         _stationDatabase = stationDatabase;
         _stationItemFactory = stationItemFactory;
-        _radioPlayer = radioPlayer;
+        _radioService = radioService;
     }
 
     public void OnInitialized()
@@ -41,9 +42,9 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 
     public void OnResumed()
     {
-        if (_radioPlayer.CurrentStation is not null)
+        if (_radioService.CurrentStation is not null)
         {
-            SelectedStation = _stationItemFactory.Create(_radioPlayer.CurrentStation);
+            SelectedStation = _stationItemFactory.Create(_radioService.CurrentStation);
         }
     }
 
@@ -51,11 +52,11 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
     {
         if (value is null)
         {
-            _radioPlayer.Stop();
+            _radioService.Stop();
         }
         else
         {
-            _radioPlayer.Play(value.Station!);
+            _radioService.Play(value.Station!);
         }
     }
 }

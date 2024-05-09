@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OOFM.Core;
+using OOFM.Core.Services;
 using OOFM.Core.Settings;
 using OOFM.Ui.Factories;
 using OOFM.Ui.Navigation;
@@ -11,7 +11,7 @@ namespace OOFM.Ui.ViewModels;
 internal partial class ApplicationViewModel : ObservableObject
 {
     private readonly IPageFactory _pageFactory;
-    private readonly IRadioPlayer _radioPlayer;
+    private readonly IRadioService _radioService;
     private readonly IStationItemFactory _stationItemFactory;
     private readonly INavigationService _navigationService;
     private readonly UserProfile _currentUserProfile;
@@ -21,24 +21,24 @@ internal partial class ApplicationViewModel : ObservableObject
 
     public ApplicationViewModel(
         IPageFactory pageFactory,
-        IRadioPlayer radioPlayer,
+        IRadioService radioService,
         INavigationService navigationService,
         IStationItemFactory stationItemFactory,
         IUserProfileService userProfileService)
     {
         _pageFactory = pageFactory;
-        _radioPlayer = radioPlayer;
+        _radioService = radioService;
         _stationItemFactory = stationItemFactory;
 
         _currentUserProfile = userProfileService.CurrentUserProfile ?? new();
         Volume = _currentUserProfile.Volume;
         IsMuted = _currentUserProfile.IsMuted;
 
-        _radioPlayer.PlaybackStarted += (station) =>
+        _radioService.PlaybackStarted += (station) =>
         {
             CurrentStation = _stationItemFactory.Create(station);
         };
-        _radioPlayer.PlaybackStopped += (_) =>
+        _radioService.PlaybackStopped += (_) =>
         {
             CurrentStation = null;
         };
@@ -59,20 +59,20 @@ internal partial class ApplicationViewModel : ObservableObject
 
     public float Volume
     {
-        get => _radioPlayer.Volume;
+        get => _radioService.Volume;
         set
         {
-            _radioPlayer.Volume = value;
+            _radioService.Volume = value;
             _currentUserProfile.Volume = value;
         }
     }
 
     public bool IsMuted
     {
-        get => _radioPlayer.IsMuted;
+        get => _radioService.IsMuted;
         set
         {
-            _radioPlayer.IsMuted = value;
+            _radioService.IsMuted = value;
             _currentUserProfile.IsMuted = value;
         }
     }
@@ -98,6 +98,6 @@ internal partial class ApplicationViewModel : ObservableObject
     [RelayCommand]
     private void Radiostop()
     {
-        _radioPlayer.Stop();
+        _radioService.Stop();
     }
 }

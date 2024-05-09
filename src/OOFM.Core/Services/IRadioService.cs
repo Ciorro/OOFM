@@ -1,8 +1,8 @@
 ﻿using OOFM.Core.Api.Models;
 
-namespace OOFM.Core;
+namespace OOFM.Core.Services;
 
-public interface IRadioPlayer
+public interface IRadioService
 {
     event Action<Station>? PlaybackStarted;
     event Action<Station>? PlaybackStopped;
