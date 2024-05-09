@@ -96,11 +96,6 @@ namespace OOFM.Ui.ViewModels.Pages
             SetStation(_radioService.CurrentStation);
         }
 
-        public void OnPaused()
-        {
-            SetStation(null);
-        }
-
         public void SetStation(Station? station)
         {
             if (station?.Id == CurrentStation?.Id)
