@@ -1,4 +1,5 @@
 ﻿using OOFM.Core.Api;
+using OOFM.Core.Api.Controllers;
 using OOFM.Core.Api.Models;
 using OOFM.Core.Streaming;
 using OOFM.Core.Streaming.Decoding;
@@ -10,6 +11,7 @@ namespace OOFM.Core.Services;
 public class RadioService : IRadioService
 {
     private readonly M3UWebStream _m3uStream;
+    private readonly IUserController _userController;
 
     public event Action<Station>? PlaybackStarted;
     public event Action<Station>? PlaybackStopped;
@@ -21,9 +23,10 @@ public class RadioService : IRadioService
     public float Volume { get; set; } = 1;
     public bool IsMuted { get; set; } = false;
 
-    public RadioService(IHttpClientProvider httpClientProvider)
+    public RadioService(IHttpClientProvider httpClientProvider, IUserController userController)
     {
-        _m3uStream = new M3UWebStream(httpClientProvider.GetHttpClient(), 262144 /*256kb*/);
+        _userController = userController;
+        _m3uStream = new M3UWebStream(httpClientProvider.GetHttpClient(), 262144);
     }
 
     public void Play(Station station)
@@ -42,8 +45,6 @@ public class RadioService : IRadioService
 
             if (!string.IsNullOrEmpty(CurrentStation.StreamUrl))
             {
-                _m3uStream.BeginStreaming(CurrentStation.StreamUrl);
-
                 _cts?.Cancel();
                 _cts = new CancellationTokenSource();
 
@@ -51,6 +52,9 @@ public class RadioService : IRadioService
                 {
                     try
                     {
+                        string urlWithToken = await _userController.AppendToken(CurrentStation.StreamUrl, _cts.Token);
+                        _m3uStream.BeginStreaming(urlWithToken);
+
                         await StreamLoop(_cts.Token);
                     }
                     catch (Exception e)

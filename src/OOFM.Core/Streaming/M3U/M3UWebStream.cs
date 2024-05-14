@@ -37,14 +37,11 @@ namespace OOFM.Core.Streaming.M3U
         {
             StopStreaming();
 
-
             _cts = new CancellationTokenSource();
             _streamTask = Task.Run(async () =>
             {
                 try
                 {
-                    streamUrl = await GetUrlWithToken(streamUrl);
-
                     if (!string.IsNullOrEmpty(streamUrl))
                     {
                         await StreamLoop(new Uri(streamUrl), _cts.Token);
@@ -120,20 +117,6 @@ namespace OOFM.Core.Streaming.M3U
         public override long Seek(long offset, SeekOrigin origin)
         {
             return _buffer.Seek(offset, origin);
-        }
-
-        private async Task<string?> GetUrlWithToken(string url)
-        {
-            string requestUrl = "https://open.fm/api/user/token?fp=" + url;
-            string response = await _http.GetStringAsync(requestUrl);
-
-            var jObj = JsonNode.Parse(response)?.AsObject();
-            if (jObj?.TryGetPropertyValue("url", out var value) == true)
-            {
-                return value!.GetValue<string>();
-            }
-
-            return null;
         }
 
         public override void Flush() { }
