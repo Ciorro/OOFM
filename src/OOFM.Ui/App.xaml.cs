@@ -27,6 +27,7 @@ public partial class App : Application
             services.AddSingleton<IStationController, StationController>();
             services.AddSingleton<ICategoryController, CategoryController>();
             services.AddSingleton<IPlaylistController, PlaylistController>();
+            services.AddSingleton<IUserController, UserController>();
 
             services.AddSingleton<IRadioService, RadioService>();
             services.AddSingleton<IStationDatabase, StationDatabase>();
