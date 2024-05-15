@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:OOFM.Ui.Controls"
+    xmlns:conv="clr-namespace:OOFM.Ui.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fic="clr-namespace:FluentIcons.WPF;assembly=FluentIcons.WPF"
     xmlns:local="clr-namespace:OOFM.Ui.Views"
@@ -30,10 +31,11 @@
                                 Grid.RowSpan="2"
                                 Grid.Column="2"
                                 MinWidth="100"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Center"
+                                SelectedIndex="{Binding Theme, Converter={conv:ThemeToInt32Converter}}">
                                 <ComboBoxItem>Jasny</ComboBoxItem>
                                 <ComboBoxItem>Ciemny</ComboBoxItem>
-                                <ComboBoxItem>System</ComboBoxItem>
+                                <ComboBoxItem>Użyj ustawienia systemu</ComboBoxItem>
                             </ComboBox>
                         </controls:SettingsEntry>
                     </ui:SimpleStackPanel>

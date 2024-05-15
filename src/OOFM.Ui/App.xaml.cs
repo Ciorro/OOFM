@@ -41,7 +41,7 @@ public partial class App : Application
             services.AddStationItemFactory();
 
             services.AddSingleton<ApplicationViewModel>();
-            services.AddSingleton(s => new FluentWindow
+            services.AddSingleton(s => new FluentWindow(s.GetRequiredService<IUserProfileService>())
             {
                 DataContext = s.GetRequiredService<ApplicationViewModel>()
             });

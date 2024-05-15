@@ -1,4 +1,6 @@
-﻿using ModernWpf;
+﻿using Microsoft.Win32;
+using ModernWpf;
+using OOFM.Core.Settings;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -10,24 +12,34 @@ namespace OOFM.Ui.Windows;
 
 public partial class FluentWindow : Window
 {
-    public FluentWindow()
+    public FluentWindow(IUserProfileService userProfileService)
     {
         InitializeComponent();
 
         nint hWnd = new WindowInteropHelper(this).EnsureHandle();
 
-        SetWindowTheme(hWnd);
+        SetWindowTheme(GetApplicationTheme(userProfileService.CurrentUserProfile.Theme));
         ExtendGlassFrame();
+
+        userProfileService.CurrentUserProfile.OnThemeChanged += (theme) =>
+        {
+            SetWindowTheme(GetApplicationTheme(theme));
+        };
 
         ThemeManager.Current.ActualApplicationThemeChanged += (_, _) =>
         {
-            SetWindowTheme(hWnd);
+            if (userProfileService.CurrentUserProfile.Theme == Theme.Auto)
+            {
+                SetWindowTheme(GetApplicationTheme());
+            }
         };
     }
 
-    private void SetWindowTheme(nint hWnd, ApplicationTheme? theme = null)
+    private void SetWindowTheme(ApplicationTheme theme)
     {
-        uint themeValue = (uint)(theme ?? ThemeManager.Current.ActualApplicationTheme);
+        nint hWnd = new WindowInteropHelper(this).EnsureHandle();
+
+        uint themeValue = (uint)(theme);
         uint captionColor = 0xFFFFFFFE;
 
         DwmSetWindowAttribute(
@@ -55,6 +67,13 @@ public partial class FluentWindow : Window
         {
             EnableMica(hWnd);
         }
+
+        ThemeManager.SetRequestedTheme(this, theme switch
+        {
+            ApplicationTheme.Light => ElementTheme.Light,
+            ApplicationTheme.Dark => ElementTheme.Dark,
+            _ => ElementTheme.Light
+        });        
     }
 
     private void ExtendGlassFrame()
@@ -106,5 +125,30 @@ public partial class FluentWindow : Window
         SetWindowCompositionAttribute(hWnd, ref data);
 
         Marshal.FreeHGlobal(accentPolicyPtr);
+    }
+
+    private ApplicationTheme GetApplicationTheme(Theme? theme = null)
+    {
+        if (theme == Theme.Auto || theme is null)
+        {
+            return DetectTheme();
+        }
+
+        return (ApplicationTheme)theme;
+    }
+
+    private static ApplicationTheme DetectTheme()
+    {
+        const string LightThemeRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+
+        using (var key = Registry.CurrentUser.OpenSubKey(LightThemeRegistryKey))
+        {
+            if ((key?.GetValue("AppsUseLightTheme")) as int? > 0)
+            {
+                return ApplicationTheme.Light;
+            }
+
+            return ApplicationTheme.Dark;
+        }
     }
 }
