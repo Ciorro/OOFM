@@ -3,5 +3,6 @@
         <ResourceDictionary Source="/Themes/ThemeExtensions.xaml" />
         <ResourceDictionary Source="/Themes/Controls/NavigationButtonStyle.xaml" />
         <ResourceDictionary Source="/Themes/Controls/GroupBoxStyle.xaml" />
+        <ResourceDictionary Source="/Themes/Controls/SettingsEntryStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
