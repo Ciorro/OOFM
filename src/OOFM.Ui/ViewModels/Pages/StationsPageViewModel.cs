@@ -34,7 +34,7 @@ internal partial class StationsPageViewModel : ObservableObject, INavigationPage
 
     public void OnInitialized()
     {
-        RadioStations = new ObservableCollection<StationItemViewModel>(_stationDatabase.Select(s =>
+        RadioStations = new ObservableCollection<StationItemViewModel>(_stationDatabase.Stations.Select(s =>
         {
             return _stationItemFactory.Create(s);
         }));

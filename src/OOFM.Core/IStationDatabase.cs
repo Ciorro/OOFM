@@ -2,11 +2,9 @@
 
 namespace OOFM.Core;
 
-public interface IStationDatabase : IEnumerable<Station>
+public interface IStationDatabase
 {
-    void AddStation(Station station);
-    bool RemoveStation(Station station);
-    void Clear();
+    ICollection<Station> Stations { get; }
 
     Station? GetStationById(int id);
     Station? GetStationBySlug(string slug);

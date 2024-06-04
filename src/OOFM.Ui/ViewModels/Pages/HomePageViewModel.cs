@@ -83,7 +83,7 @@ internal partial class HomePageViewModel : ObservableObject, IDisposable, INavig
 
     private void RefreshRecommendedStations()
     {
-        var recommendedStations = _stationDatabase.Where(station =>
+        var recommendedStations = _stationDatabase.Stations.Where(station =>
         {
             var playlist = _playlistService.GetPlaylist(station.Id);
 

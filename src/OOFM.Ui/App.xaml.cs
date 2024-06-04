@@ -78,7 +78,7 @@ public partial class App : Application
         var stationDb = _appHost.Services.GetRequiredService<IStationDatabase>();
         foreach (var station in stations)
         {
-            stationDb.AddStation(station);
+            stationDb.Stations.Add(station);
         }
     }
 
